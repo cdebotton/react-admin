@@ -1,0 +1,42 @@
+.input
+  position relative
+
+  .underline
+    position absolute
+    bottom 0
+    left 0
+    width 0
+    height 1px
+    background-color black
+    transition width 400ms ease
+
+  input
+    padding 1rem
+    border none
+    border-bottom 1px solid #ccc
+    font-size 1.414rem
+    font-weight 300
+
+    &:focus
+      outline none
+
+      & + .underline
+        width 100%
+
+  .label
+    position absolute
+    left 1rem
+    top 120%
+    font-size 1.15rem
+    text-transform uppercase
+    opacity 0.0
+    transform translate3d(0, -20%, 0)
+    transition transform 400ms ease, opacity 400ms ease
+
+    &.visible
+      transform translate3d(0, 0, 0)
+      opacity 1.0
+
+  &.valid
+    .label
+      color green

@@ -1,0 +1,77 @@
+{
+  "name": "cdb",
+  "version": "1.0.0",
+  "description": "debotton.io",
+  "main": "index.js",
+  "scripts": {
+    "build": "NODE_ENV=production gulp",
+    "serve": "NODE_ENV=production supervisor --harmony -e js ./index.js",
+    "test": "gulp mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:cdebotton/cdb.git"
+  },
+  "keywords": [
+    "assets",
+    "library",
+    "react"
+  ],
+  "author": "Christian de Botton <debotton@brooklynunited.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cdebotton/cdb/issues"
+  },
+  "homepage": "https://github.com/cdebotton/cdb",
+  "devDependencies": {
+    "babel-core": "^5.1.13",
+    "babel-eslint": "^3.0.1",
+    "babel-loader": "^5.0.0",
+    "babel-runtime": "^5.1.13",
+    "css-loader": "^0.12.0",
+    "del": "^1.1.1",
+    "eslint": "^0.20.0",
+    "eslint-loader": "^0.11.1",
+    "extract-text-webpack-plugin": "^0.7.0",
+    "file-loader": "^0.8.1",
+    "font-awesome": "^4.3.0",
+    "gulp": "^3.8.11",
+    "gulp-plumber": "^1.0.0",
+    "gulp-spawn-mocha": "^2.0.1",
+    "gulp-util": "^3.0.4",
+    "jeet": "^6.1.2",
+    "json-loader": "^0.5.1",
+    "mocha": "^2.2.4",
+    "mocha-loader": "^0.7.1",
+    "nib": "^1.1.0",
+    "pretty-error": "^1.1.2",
+    "react": "^0.13.2",
+    "react-hot-loader": "^1.2.5",
+    "require-dir": "^0.3.0",
+    "rupture": "^0.6.1",
+    "strip-loader": "^0.1.0",
+    "style-loader": "^0.12.1",
+    "stylus-loader": "^1.1.0",
+    "supertest": "^0.15.0",
+    "url-loader": "^0.5.5",
+    "webpack": "^1.8.10",
+    "webpack-dev-server": "^1.8.2"
+  },
+  "dependencies": {
+    "alt": "^0.15.6",
+    "babel": "^5.1.13",
+    "classnames": "^1.2.2",
+    "immutable": "^3.7.2",
+    "koa": "^0.19.1",
+    "koa-bodyparser": "^1.5.0",
+    "koa-compress": "^1.0.8",
+    "koa-router": "^4.3.2",
+    "koa-static": "^1.4.9",
+    "react": "^0.13.2",
+    "react-document-title": "^1.0.2",
+    "react-router": "^0.13.2",
+    "serialize-javascript": "^1.0.0",
+    "supervisor": "^0.6.0",
+    "validator": "^3.39.0"
+  }
+}
