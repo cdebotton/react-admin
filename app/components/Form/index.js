@@ -18,8 +18,13 @@ export default class Form extends React.Component {
       formData: new OrderedMap()
     };
 
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleValidate = this.handleValidate.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
+  }
+
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired
   }
 
   static childContextTypes = {
@@ -107,6 +112,14 @@ export default class Form extends React.Component {
     }
   }
 
+  handleSubmit(event) {
+    let { onSubmit } = this.props;
+    let { formData } = this.state;
+    event.preventDefault();
+
+    onSubmit(formData.toJS());
+  }
+
   render() {
     let {
       className,
@@ -117,6 +130,7 @@ export default class Form extends React.Component {
     return (
       <form
         { ...otherProps }
+        onSubmit={ this.handleSubmit }
         className={ classNames(["form", className, {
           valid: this.isValid()
         } ]) }>

@@ -18,8 +18,8 @@ export default class LoginRoute extends React.Component {
     return { session };
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
+  handleSubmit(data) {
+    console.log(data);
   }
 
   render() {
