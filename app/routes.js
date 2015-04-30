@@ -14,12 +14,14 @@ import AdminLoginRoute from "./components/AdminLoginRoute";
 import AdminDashboardRoute from "./components/AdminDashboardRoute";
 import AdminUsersRoute from "./components/AdminUsersRoute";
 import AdminUsersCreateRoute from "./components/AdminUsersCreateRoute";
+import HomeRoute from "./components/HomeRoute";
 import NotFoundPage from "./components/NotFoundRoute";
 import NotFoundError from "./components/NotFoundError";
 
 export default (
   <Route>
     <Route handler={ App }>
+      <DefaultRoute handler={ HomeRoute } />
       <Route
         name="admin"
         handler={ AdminRoute }>
