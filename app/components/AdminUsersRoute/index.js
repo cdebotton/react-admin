@@ -2,6 +2,7 @@
 
 import React, { PropTypes } from "react";
 import { Link, RouteHandler } from "react-router";
+import UserStore from "../../stores/UserStore";
 
 export default class AdminUsersRoute extends React.Component {
   render() {

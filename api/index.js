@@ -15,6 +15,7 @@ const routes = require("require-dir")("./routes");
 const PORT = process.env.PORT || 3000;
 const ENV = process.env.NODE_ENV || "development";
 
+app.use(errorHandler());
 app.use(compress());
 app.use(bodyparser());
 app.use(statics(path.join(__dirname, "../public")));
@@ -23,7 +24,6 @@ Object.keys(routes).forEach(routeName => {
   app.use(mount("/api", route.middleware()));
 });
 app.use(render());
-app.use(errorHandler());
 
 const server = http.createServer(app.callback());
 

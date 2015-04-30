@@ -71,6 +71,7 @@
   "dependencies": {
     "alt": "^0.15.6",
     "babel": "^5.1.13",
+    "bcrypt": "^0.8.2",
     "classnames": "^1.2.2",
     "concurrently": "0.0.5",
     "immutable": "^3.7.2",

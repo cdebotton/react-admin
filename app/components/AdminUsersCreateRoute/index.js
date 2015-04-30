@@ -1,6 +1,8 @@
 "use strict";
 
 import React, { PropTypes } from "react";
+import UserActionCreators from "../../actions/UserActionCreators";
+import * as helpers from "../../utils/helpers";
 import Form, {
   Input,
   Submit
@@ -8,7 +10,8 @@ import Form, {
 
 export default class AdminUsersCreateRoute extends React.Component {
   handleSubmit(model) {
-    console.log(model);
+    let user = helpers.mask(model, "email", "password");
+    UserActionCreators.createUser(user);
   }
 
   render() {
@@ -17,12 +20,14 @@ export default class AdminUsersCreateRoute extends React.Component {
         <h3>Create a user</h3>
         <Form onSubmit={ this.handleSubmit }>
           <Input
+            autoComplete="off"
             validation="isEmail|isRequired"
             name="email"
             placeholder="Email address" />
           <Input
             validation="isLength:5|isRequired"
             name="password"
+            type="password"
             placeholder="Password" />
           <Submit>Create</Submit>
         </Form>

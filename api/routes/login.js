@@ -1,6 +1,7 @@
 "use strict";
 
 import Router from "koa-router";
+import NotFoundError from "../lib/NotFoundError";
 import { User } from "../models";
 
 const router = new Router();
@@ -15,8 +16,7 @@ router.post("/login", function *(next) {
 
   if (!user) {
     this.status = 404;
-    this.body = { message: "User not found" };
-    return yield next;
+    throw new NotFoundError("User not found.");
   }
 
   this.body = this.request.body;

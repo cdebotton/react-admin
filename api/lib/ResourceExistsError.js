@@ -2,8 +2,8 @@
 
 const REASON = Symbol("reason");
 
-export default class NotFoundError extends Error {
-  constructor(reason) {
+export default class ResourceExistsError extends Error {
+  constructor(reason = "Resource exists.") {
     super(reason);
     this[REASON] = reason;
   }
@@ -12,6 +12,6 @@ export default class NotFoundError extends Error {
     return this[REASON];
   }
   set reason(v) {
-    throw new Error("NotFoundError.reason is read-only.");
+    throw new Error("ResourceExistsError.reason is read-only.");
   }
 }
