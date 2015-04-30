@@ -21,10 +21,18 @@ describe("Server", () => {
     server = request(app.callback());
   });
 
-  it("should return HTML", done => {
-    server.get("/")
-      .expect("Content-Type", "text/html; charset=utf-8")
-      .end(finish(done))
+  describe("/", () => {
+    it("should return HTML", done => {
+      server.get("/")
+        .expect("Content-Type", "text/html; charset=utf-8")
+        .end(finish(done))
+    });
+
+    it("should be ok", done => {
+      server.get("/")
+        .expect(200)
+        .end(finish(done));
+    });
   });
 
   describe("/admin", () => {
