@@ -9,7 +9,8 @@ class SessionStore {
     this.bindActions(SessionActionCreators);
     this.session = new OrderedMap({
       loading: false,
-      nextPath: null
+      nextPath: null,
+      status: 200
     });
     this.on("init", this.setup);
     this.on("bootstrap", this.setup);

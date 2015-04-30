@@ -14,26 +14,32 @@ import AdminLoginRoute from "./components/AdminLoginRoute";
 import AdminDashboardRoute from "./components/AdminDashboardRoute";
 import AdminUsersRoute from "./components/AdminUsersRoute";
 import AdminUsersCreateRoute from "./components/AdminUsersCreateRoute";
+import NotFoundPage from "./components/NotFoundRoute";
 import NotFoundError from "./components/NotFoundError";
 
 export default (
-  <Route handler={ App }>
-    <Route
-      name="admin"
-      handler={ AdminRoute }>
-      <DefaultRoute handler={ AdminDashboardRoute } />
+  <Route>
+    <Route handler={ App }>
       <Route
-        name="login"
-        handler={ AdminLoginRoute } />
-      <Route
-        name="users"
-        handler={ AdminUsersRoute }>
+        name="admin"
+        handler={ AdminRoute }>
+        <DefaultRoute handler={ AdminDashboardRoute } />
         <Route
-          name="users-create"
-          path="create"
-          handler={ AdminUsersCreateRoute } />
+          name="login"
+          handler={ AdminLoginRoute } />
+        <Route
+          name="users"
+          handler={ AdminUsersRoute }>
+          <Route
+            name="users-create"
+            path="create"
+            handler={ AdminUsersCreateRoute } />
+        </Route>
       </Route>
+      <NotFoundRoute handler={ NotFoundPage } />
     </Route>
-    <NotFoundRoute handler={ NotFoundError } />
+    <Route path="/api">
+      <NotFoundRoute handler={ NotFoundError } />
+    </Route>
   </Route>
 );

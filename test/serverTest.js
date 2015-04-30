@@ -27,12 +27,6 @@ describe("Server", () => {
       .end(finish(done))
   });
 
-  it("should redirect when not logged in", done => {
-    server.get("/")
-      .expect(200)
-      .end(finish(done));
-  });
-
   describe("/admin", () => {
     describe ("/admin/dashboard", () => {
       it("should redirect unauthorized users to login", done => {

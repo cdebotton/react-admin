@@ -5,6 +5,8 @@ import React from "react";
 import ReactRouter from "react-router";
 import PrettyError from "pretty-error";
 import alt from "../../app/alt";
+import SessionActionCreators from "../../app/actions/SessionActionCreators";
+import SessionStore from "../../app/stores/SessionStore";
 import HTMLDocument from "../../app/components/HTMLDocument";
 import NotFoundError from "../lib/NotFoundError";
 import RedirectError from "../lib/RedirectError";
@@ -30,6 +32,12 @@ export default function() {
     try {
       let [Handler, state] = yield getHandlerWithState(router);
       let body = getBody(Handler, state);
+      let notFound = state.routes.map(route => route.handler.name)
+        .indexOf("NotFoundRoute") > -1;
+
+      if (notFound) {
+        this.status = 404;
+      }
 
       this.body = body;
     }
