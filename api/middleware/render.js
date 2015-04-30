@@ -5,8 +5,6 @@ import React from "react";
 import ReactRouter from "react-router";
 import PrettyError from "pretty-error";
 import alt from "../../app/alt";
-import SessionActionCreators from "../../app/actions/SessionActionCreators";
-import SessionStore from "../../app/stores/SessionStore";
 import HTMLDocument from "../../app/components/HTMLDocument";
 import NotFoundError from "../lib/NotFoundError";
 import RedirectError from "../lib/RedirectError";
