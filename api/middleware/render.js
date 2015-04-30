@@ -12,8 +12,6 @@ import RedirectError from "../lib/RedirectError";
 const doctype = "<!doctype>";
 const pe = new PrettyError();
 const ENV = process.env.NODE_ENV || "development";
-const REDIRECT_PATH = Symbol("redirect path");
-const REDIRECT_CODE = Symbol("redirect code");
 let stats;
 
 if (ENV === "production") {

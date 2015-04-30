@@ -1,5 +1,8 @@
 "use strict";
 
+const REDIRECT_PATH = Symbol("redirect path");
+const REDIRECT_CODE = Symbol("redirect code");
+
 export default class RedirectError extends Error {
   constructor(path, code=301, msg="Redirect") {
     super(msg);
