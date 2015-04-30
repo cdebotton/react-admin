@@ -13,6 +13,7 @@ import AdminRoute from "./components/AdminRoute";
 import AdminLoginRoute from "./components/AdminLoginRoute";
 import AdminDashboardRoute from "./components/AdminDashboardRoute";
 import AdminUsersRoute from "./components/AdminUsersRoute";
+import AdminUsersShow from "./components/AdminUsersShow";
 import AdminUsersCreateRoute from "./components/AdminUsersCreateRoute";
 import HomeRoute from "./components/HomeRoute";
 import NotFoundPage from "./components/NotFoundRoute";
@@ -32,6 +33,9 @@ export default (
         <Route
           name="users"
           handler={ AdminUsersRoute }>
+          <DefaultRoute
+            name="users-show"
+            handler={ AdminUsersShow } />
           <Route
             name="users-create"
             path="create"

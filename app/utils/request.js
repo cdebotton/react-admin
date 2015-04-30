@@ -3,12 +3,19 @@
 import request from "superagent";
 import { OrderedMap } from "immutable";
 
+const PORT = parseInt(process.env.PORT, 10) || 3000;
+const HOST = process.env.HOST || "localhost";
+const BROWSER = process.env.BROWSER || false;
+const ROOT = BROWSER ? window.location.origin : `http://${HOST}:${PORT}`;
+
 let Cache = new OrderedMap();
 
 export let get = (route, params) => {
-  const url = route + "?" + Object.keys(params).map(key => {
-    return `${key}=${params[key]}`;
-  });
+  const url = ROOT + route + (params ?
+     ("?" + Object.keys(params).map(key => {
+       return `${key}=${params[key]}`;
+     })) : "");
+
   const key = `GET ${url}`;
 
   clearCache(key);
@@ -16,7 +23,13 @@ export let get = (route, params) => {
   return new Promise((resolve, reject) => {
     let call = request.get(url)
       .on("error", reject)
-      .end(resolve);
+      .end((err, response) => {
+        if (err) {
+          return reject(err);
+        }
+
+        resolve(response.body);
+      });
 
     addCall(key, call);
   }).then(endRequest(key));
@@ -24,15 +37,21 @@ export let get = (route, params) => {
 
 export let post = (route, params) => {
   const key = `POST ${route} send ${JSON.stringify(params)}`;
+  let url = ROOT + route;
 
   clearCache(key);
 
   return new Promise((resolve, reject) => {
-    let call = request.post(route)
-      .accept("application/json")
+    let call = request.post(url)
       .send(params)
       .on("error", reject)
-      .end(resolve);
+      .end((err, response) => {
+        if (err) {
+          reject(err);
+        }
+
+        resolve(response.body);
+      });
 
     addCall(key, call);
   }).then(endRequest(key));
@@ -40,15 +59,22 @@ export let post = (route, params) => {
 
 export let put = (route, params) => {
   const key = `PUT ${route} send ${JSON.stringify(params)}`;
+  let url = ROOT + route;
 
   clearCache(key);
 
   return new Promise((resolve, reject) => {
-    let call = request.put(route)
+    let call = request.put(url)
       .accept("application/json")
       .send(params)
       .on("error", reject)
-      .end(resolve);
+      .end((err, response) => {
+        if (err) {
+          reject(err);
+        }
+
+        resolve(response.body);
+      });
 
     addCall(key, call);
   }).then(endRequest(key));
@@ -56,14 +82,21 @@ export let put = (route, params) => {
 
 export let del = (route, params) => {
   const key = `DELETE ${route}`;
+  let url = ROOT + route;
 
   clearCache(key);
 
   return new Promise((resolve, reject) => {
-    let call = request.del(route)
+    let call = request.del(url)
       .accept("application/json")
       .on("error", reject)
-      .end(resolve);
+      .end((err, response) => {
+        if (err) {
+          reject(err);
+        }
+
+        resolve(response.body);
+      });
 
     addCall(key, call);
   }).then(endRequest(key));
@@ -97,7 +130,6 @@ const cancel = key => {
 const endRequest = key => {
   return data => {
     Cache.delete(key);
-
     return data;
   };
 };

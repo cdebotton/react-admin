@@ -7,7 +7,9 @@ class UserActionCreators {
   constructor() {
     this.generateActions(
       "createUserSuccess",
-      "createUserError"
+      "createUserError",
+      "getUsersSuccess",
+      "getUsersError"
     );
   }
 
@@ -16,10 +18,22 @@ class UserActionCreators {
 
     try {
       let user = await UserAPI.createUser(data);
-      this.actions.createUserSuccess(user);
+      this.actions.createUserSuccess.defer(user);
     }
     catch (err) {
-      this.actions.createUserError(err);
+      this.actions.createUserError.defer(err);
+    }
+  }
+
+  async getUsers() {
+    this.dispatch();
+
+    try {
+      let users = await UserAPI.getUsers();
+      this.actions.getUsersSuccess.defer(users);
+    }
+    catch (err) {
+      this.actions.getUsersError.defer(err);
     }
   }
 }

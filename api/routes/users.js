@@ -8,7 +8,15 @@ import { User } from "../models";
 const router = new Router();
 
 router.get("/users", function *(next) {
+  let users = yield User.findAll({
+    attributes: ["id", "email", "lastLogin"]
+  });
 
+  if (!users) {
+    users = [];
+  }
+
+  this.body = users;
 });
 
 router.get("/users/:id", function *(next) {
@@ -27,7 +35,8 @@ router.post("/users", function *(next) {
   }
 
   let user = yield User.create(helpers.mask(data, "email", "password"));
-  this.body = user;
+
+  this.body = [user];
 });
 
 router.put("/users/:id", function *(next) {

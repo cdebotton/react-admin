@@ -148,6 +148,8 @@ import _Input from "./Input";
 export { _Input as Input };
 import _Submit from "./Submit";
 export { _Submit as Submit };
+import _Cancel from "./Cancel";
+export { _Cancel as Cancel };
 
 if (process.env.BROWSER) {
   require("./form.styl");

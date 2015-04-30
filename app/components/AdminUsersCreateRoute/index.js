@@ -5,13 +5,29 @@ import UserActionCreators from "../../actions/UserActionCreators";
 import * as helpers from "../../utils/helpers";
 import Form, {
   Input,
-  Submit
+  Submit,
+  Cancel
 } from "../Form";
 
 export default class AdminUsersCreateRoute extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.handleCancel = this.handleCancel.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  static contextTypes = {
+    router: PropTypes.func.isRequired
+  }
+
   handleSubmit(model) {
     let user = helpers.mask(model, "email", "password");
     UserActionCreators.createUser(user);
+  }
+
+  handleCancel(event) {
+    event.preventDefault();
+    this.context.router.transitionTo("users");
   }
 
   render() {
@@ -30,6 +46,7 @@ export default class AdminUsersCreateRoute extends React.Component {
             type="password"
             placeholder="Password" />
           <Submit>Create</Submit>
+          <Cancel onClick={ this.handleCancel }>Cancel</Cancel>
         </Form>
       </div>
     );

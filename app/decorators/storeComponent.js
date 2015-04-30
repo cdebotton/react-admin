@@ -4,14 +4,18 @@ import React, { PropTypes } from "react";
 
 export default function storeComponent(...stores) {
   return function storeComponentDecorator(Target) {
-    let { getStateFromStores } = Target;
+    let { getStateFromStores, fetchData } = Target;
     delete Target.getStateFromStores;
 
-    return class StoreComponent extends React.Component {
+    class StoreComponent extends React.Component {
       constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.state = getStateFromStores(props);
+      }
+
+      static fetchData(router) {
+        return Target.fetchData.call(this, router);
       }
 
       componentDidMount() {
@@ -33,6 +37,12 @@ export default function storeComponent(...stores) {
             { ...this.state } />
         );
       }
-    };
+    }
+
+    if (fetchData) {
+      StoreComponent.fetchData = Target.fetchData;
+    }
+
+    return StoreComponent;
   };
 }
