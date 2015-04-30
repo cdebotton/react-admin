@@ -49,8 +49,8 @@ const createReactRouter = context => {
         throw new NotFoundError();
       }
       else {
-        let { reason, params, query, ...otherParams } = reason;
-        let path = this.makePath(reason, params, query);
+        let { to, params, query, ...otherParams } = reason;
+        let path = this.makePath(to, params, query);
         throw new RedirectError(path, 301);
       }
     }
