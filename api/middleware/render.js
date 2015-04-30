@@ -1,86 +1,88 @@
 "use strict";
 
+import path from "path";
 import React from "react";
 import ReactRouter from "react-router";
+import PrettyError from "pretty-error";
 import alt from "../../app/alt";
 import HTMLDocument from "../../app/components/HTMLDocument";
-import PrettyError from "pretty-error";
+import NotFoundError from "../lib/NotFoundError";
+import RedirectError from "../lib/RedirectError";
 
+const doctype = "<!doctype>";
 const pe = new PrettyError();
 const ENV = process.env.NODE_ENV || "development";
 const REDIRECT_PATH = Symbol("redirect path");
 const REDIRECT_CODE = Symbol("redirect code");
+let stats;
 
-class RedirectError extends Error {
-  constructor(path, code=301, msg="Redirect") {
-    super(msg);
-    this[REDIRECT_PATH] = path;
-    this[REDIRECT_CODE] = code;
-  }
-
-  get path() {
-    return this[REDIRECT_PATH];
-  }
-  set path(path) {
-    throw new Error("Cannot set RedirectError.path");
-  }
-
-  get code() {
-    return this[REDIRECT_CODE];
-  }
-  set code(code) {
-    throw new Error("Cannot set RedirectError.code");
-  }
+if (ENV === "production") {
+  stats = require("../webpack-stats.json");
 }
 
 export default function() {
-  const doctype = "<!doctype>";
   return function *(next) {
-    const stats = require("../webpack-stats.json");
-    const Router = ReactRouter.create({
-      location: this.req.url,
-      routes: require("../../app/routes"),
-      onAbort({ to, params, query }) {
-        let path = this.makePath(to, params, query);
+    if (ENV === "development") {
+      delete require.cache[path.resolve("./api/webpack-stats.json")];
+      stats = require("../webpack-stats.json");
+    }
 
-        throw new RedirectError(path, 301);
-      }
-    });
+    const router = createReactRouter(this);
 
     try {
-      let [Handler, state] = yield new Promise((resolve, reject) => {
-        try {
-          Router.run((...handlers) => resolve(handlers));
-        }
-        catch (err) {
-          reject(err);
-        }
-      });
+      let [Handler, state] = yield getHandlerWithState(router);
+      let body = getBody(Handler, state);
 
-      let markup = React.renderToString(
-        <Handler
-          { ...state } />
-      );
-
-      let snapshot = alt.flush();
-      let htmlDocument = (
-        <HTMLDocument
-          markup={ markup }
-          snapshot={ snapshot }
-          { ...stats } />
-      );
-      let html = React.renderToStaticMarkup(htmlDocument);
-
-      this.body = doctype + html;
+      this.body = body;
     }
     catch (err) {
-      if (err instanceof RedirectError) {
-        this.redirect(err.path);
-      }
-      else if (ENV === "development") {
-        console.log(pe.render(err));
-        this.body = err.stack;
-      }
+      this.err = err;
+      yield next;
     }
   }
+};
+
+const createReactRouter = context => {
+  return ReactRouter.create({
+    location: context.req.url,
+    routes: require("../../app/routes"),
+    onAbort(reason) {
+      if (reason === "404") {
+        throw new NotFoundError();
+      }
+      else {
+        let { reason, params, query, ...otherParams } = reason;
+        let path = this.makePath(reason, params, query);
+        throw new RedirectError(path, 301);
+      }
+    }
+  });
+};
+
+const getHandlerWithState = Router => {
+  return new Promise((resolve, reject) => {
+    try {
+      Router.run((...handlers) => resolve(handlers));
+    }
+    catch (err) {
+      reject(err);
+    }
+  });
+};
+
+const getBody = (Handler, state) => {
+  let markup = React.renderToString(
+    <Handler { ...state } />
+  );
+
+  let snapshot = alt.flush();
+  let htmlDocument = (
+    <HTMLDocument
+      markup={ markup }
+      snapshot={ snapshot }
+      { ...stats } />
+  );
+  let html = React.renderToStaticMarkup(htmlDocument);
+
+  return doctype + html;
 };

@@ -44,6 +44,14 @@ module.exports = {
       "process.env.BROWSER": JSON.stringify(true),
       NODE_ENV: JSON.stringify("production")
     }),
+    new webpack.ProgressPlugin(function(percentage, message) {
+      var MOVE_LEFT = new Buffer("1b5b3130303044", "hex").toString();
+      var CLEAR_LINE = new Buffer("1b5b304b", "hex").toString();
+      process.stdout.write(
+        CLEAR_LINE + "Packing: " +
+        Math.round(percentage * 100) + "% " + message + " " + MOVE_LEFT
+      );
+    }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({

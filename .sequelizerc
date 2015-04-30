@@ -1,0 +1,7 @@
+"use strict";
+
+module.exports = {
+  "models-path": "./api/models",
+  "migrations-path": "./api/migrations",
+  "config": "./api/config/config.json"
+};

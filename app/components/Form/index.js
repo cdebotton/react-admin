@@ -115,9 +115,13 @@ export default class Form extends React.Component {
   handleSubmit(event) {
     let { onSubmit } = this.props;
     let { formData } = this.state;
-    event.preventDefault();
+    let model = formData.reduce((memo, field, key) => {
+      memo[key] = field.get("value");
+      return memo;
+    }, {});
 
-    onSubmit(formData.toJS());
+    event.preventDefault();
+    onSubmit(model);
   }
 
   render() {

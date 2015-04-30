@@ -10,14 +10,30 @@ import {
 
 import App from "./components/App";
 import AdminRoute from "./components/AdminRoute";
-import LoginRoute from "./components/LoginRoute";
-import DashboardRoute from "./components/DashboardRoute";
+import AdminLoginRoute from "./components/AdminLoginRoute";
+import AdminDashboardRoute from "./components/AdminDashboardRoute";
+import AdminUsersRoute from "./components/AdminUsersRoute";
+import AdminUsersCreateRoute from "./components/AdminUsersCreateRoute";
+import NotFoundError from "./components/NotFoundError";
 
 export default (
   <Route handler={ App }>
-    <Route name="admin" handler={ AdminRoute }>
-      <DefaultRoute handler={ DashboardRoute } />
-      <Route name="login" handler={ LoginRoute } />
+    <Route
+      name="admin"
+      handler={ AdminRoute }>
+      <DefaultRoute handler={ AdminDashboardRoute } />
+      <Route
+        name="login"
+        handler={ AdminLoginRoute } />
+      <Route
+        name="users"
+        handler={ AdminUsersRoute }>
+        <Route
+          name="users-create"
+          path="create"
+          handler={ AdminUsersCreateRoute } />
+      </Route>
     </Route>
+    <NotFoundRoute handler={ NotFoundError } />
   </Route>
 );
