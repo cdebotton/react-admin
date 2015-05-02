@@ -28,23 +28,17 @@ export default function() {
 
     const router = createReactRouter(this);
 
-    try {
-      let [Handler, state] = yield getHandlerWithState(router);
-      let data = yield fetchData(state);
-      let body = getBody(Handler, state);
-      let notFound = state.routes.map(route => route.handler.name)
-        .indexOf("NotFoundRoute") > -1;
+    let [Handler, state] = yield getHandlerWithState(router);
+    let data = yield fetchData(state);
+    let body = getBody(Handler, state);
+    let notFound = state.routes.map(route => route.handler.name)
+      .indexOf("NotFoundRoute") > -1;
 
-      if (notFound) {
-        this.status = 404;
-      }
+    if (notFound) {
+      this.status = 404;
+    }
 
-      this.body = body;
-    }
-    catch (err) {
-      this.err = err;
-      yield next;
-    }
+    this.body = body;
   }
 };
 

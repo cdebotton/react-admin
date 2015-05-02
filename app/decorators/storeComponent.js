@@ -14,10 +14,6 @@ export default function storeComponent(...stores) {
         this.state = getStateFromStores(props);
       }
 
-      static fetchData(router) {
-        return Target.fetchData.call(this, router);
-      }
-
       componentDidMount() {
         stores.forEach(store => store.listen(this.handleChange));
       }

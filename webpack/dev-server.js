@@ -12,6 +12,7 @@ var serverOptions = {
   quiet: true,
   noInfo: true,
   hot: true,
+  colors: true,
   publicPath: config.output.publicPath
 };
 
