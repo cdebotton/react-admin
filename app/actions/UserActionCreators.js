@@ -18,10 +18,14 @@ class UserActionCreators {
 
     try {
       let user = await UserAPI.createUser(data);
-      this.actions.createUserSuccess.defer(user);
+      this.actions.createUserSuccess(user);
+
+      return user;
     }
     catch (err) {
-      this.actions.createUserError.defer(err);
+      this.actions.createUserError(err);
+
+      return err;
     }
   }
 
@@ -30,10 +34,14 @@ class UserActionCreators {
 
     try {
       let users = await UserAPI.getUsers();
-      this.actions.getUsersSuccess.defer(users);
+      this.actions.getUsersSuccess(users);
+
+      return users;
     }
     catch (err) {
-      this.actions.getUsersError.defer(err);
+      this.actions.getUsersError(err);
+
+      return err;
     }
   }
 }

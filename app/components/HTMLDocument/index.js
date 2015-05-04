@@ -39,8 +39,7 @@ export default class HTMLDocument extends React.Component {
           id="root"
           dangerouslySetInnerHTML={{ __html: markup }} />
         <script
-          id="payload"
-          dangerouslySetInnerHTML={{ __html: serialize(snapshot) }} />
+          dangerouslySetInnerHTML={{ __html: `var payload = ${snapshot};` }} />
         { scripts.map((js, key) => (
           <script
             key={ key }

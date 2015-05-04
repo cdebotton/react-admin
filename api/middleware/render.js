@@ -10,6 +10,10 @@ import HTMLDocument from "../../app/components/HTMLDocument";
 import NotFoundError from "../lib/NotFoundError";
 import RedirectError from "../lib/RedirectError";
 
+const getAlt = () => {
+  delete require.cache[path.resolve("../../app/alt")];
+  return require("../../app/alt");
+}
 const doctype = "<!doctype>";
 const pe = new PrettyError();
 const ENV = process.env.NODE_ENV || "development";
@@ -71,16 +75,13 @@ const getHandlerWithState = Router => {
 };
 
 const getBody = (Handler, state) => {
-  let markup = React.renderToString(
-    <Handler { ...state } />
-  );
-
-  let snapshot = alt.flush();
+  let markup = React.renderToString(<Handler { ...state } />);
+  let data = alt.flush();
 
   let htmlDocument = (
     <HTMLDocument
       markup={ markup }
-      snapshot={ snapshot }
+      snapshot={ data }
       { ...stats } />
   );
   let html = React.renderToStaticMarkup(htmlDocument);

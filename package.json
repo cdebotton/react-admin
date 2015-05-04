@@ -69,7 +69,7 @@
     "webpack-dev-server": "^1.8.2"
   },
   "dependencies": {
-    "alt": "^0.15.6",
+    "alt": "^0.16.1",
     "babel": "^5.1.13",
     "bcrypt": "^0.8.2",
     "classnames": "^1.2.2",

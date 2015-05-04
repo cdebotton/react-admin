@@ -17,10 +17,14 @@ class SessionActionCreators {
 
     try {
       let session = await SessionAPI.login(credentials);
-      this.actions.loginSuccess.defer(session);
+      this.actions.loginSuccess(session);
+
+      return session;
     }
     catch (err) {
-      this.actions.loginError.defer(err);
+      this.actions.loginError(err);
+
+      return err;
     }
   }
 }

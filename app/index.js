@@ -7,8 +7,8 @@ import { fetchData } from "./utils/helpers";
 import SessionActionCreators from "./actions/SessionActionCreators";
 
 let bootstrapped = false;
-let payload = JSON.parse(document.getElementById("payload").innerText);
-
+let { payload } = window;
+alt.bootstrap(JSON.stringify(payload));
 
 Router.run((Handler, state) => {
   if (!bootstrapped) {

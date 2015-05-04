@@ -12,9 +12,10 @@ export default class AdminUsersShow extends React.Component {
   }
 
   static getStateFromStores(params, query) {
-    let { users, loading } = UserStore.getState();
-
-    return { users, loading };
+    return {
+      users: UserStore.getUsers(),
+      loading: UserStore.isLoading()
+    };
   }
 
   render() {

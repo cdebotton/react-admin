@@ -1,14 +1,20 @@
 "use strict";
 
 import alt from "../alt";
-import Immutable, { OrderedMap, Iterable } from "immutable";
+import immutable from "alt/utils/ImmutableUtil";
+import Immutable, { Map, Iterable } from "immutable";
 import UserActionCreators from "../actions/UserActionCreators";
 
+@immutable
 class UserStore {
-  constructor() {
-    this.users = new OrderedMap();
-    this.loading = false;
+  static displayName = "UserStore"
 
+  state = Map({
+    users: Map({}),
+    loading: false
+  })
+
+  constructor() {
     this.bindListeners({
       onGetUsers: UserActionCreators.GET_USERS,
       onCreateUser: UserActionCreators.CREATE_USER,
@@ -21,16 +27,15 @@ class UserStore {
         UserActionCreators.GET_USERS_ERROR
       ]
     });
+  }
 
-    this.on("serialize", () => ({
-      loading: this.loading,
-      users: this.users.toJS()
-    }));
+  static getUsers() {
+    console.log(this.getState().get("users").toJS());
+    return this.getState().get("users");
+  }
 
-    this.on("deserialize", data => Immutable.fromJS(data, (key, value) => {
-      let isIndexable = Iterable.isIndexed(value);
-      return isIndexable ? value.toList() : value.toOrderedMap();
-    }));
+  static isLoading() {
+    return this.getState().get("loading");
   }
 
   onGetUsers() {
@@ -43,10 +48,9 @@ class UserStore {
 
   onAddUsersSuccess(response) {
     let { users: userResponse } = response.entities;
-    let { users } = this;
+    let state = this.state.updateIn(["users"], u => u.merge(userResponse));
 
-    users = this.users.merge(userResponse);
-    this.setState({ users });
+    this.setState(state);
   }
 
   onAddUsersError(err) {
