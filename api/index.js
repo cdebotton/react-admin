@@ -21,6 +21,7 @@ const KEY_SECRET = process.env.KEY_SECRET || "koa key secret";
 
 require("./passport");
 
+app.proxy = true;
 app.keys = [KEY, KEY_SECRET];
 app.use(session(app));
 app.use(passport.initialize());
