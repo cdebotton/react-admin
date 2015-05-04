@@ -29,8 +29,8 @@ export default function() {
 
     const router = createReactRouter(this);
 
-    if (this.session.user) {
-      SessionActionCreators.loginSuccess(this.session.user);
+    if (this.session.token) {
+      SessionActionCreators.loginSuccess(this.session.token);
     }
 
     let [Handler, state] = yield getHandlerWithState(router);

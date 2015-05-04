@@ -3,19 +3,18 @@
 import Router from "koa-router";
 import NotFoundError from "../lib/NotFoundError";
 import * as AuthService from "../services/AuthService";
-import { User } from "../models";
+import { User, Token } from "../models";
 
 const router = new Router();
 
 router.post("/login", AuthService.login(), function *(next) {
-
-  this.body = this.user;
-  // this.body = { authed: isAuthed };
+  this.body = this.session.token;
 });
 
 router.del("/logout", function *(next) {
-  delete this.session.user;
-
+  let token = yield Token.find(this.session.token.id);
+  token.destroy();
+  delete this.session.token;
   this.body = { message: "Ok" };
 });
 

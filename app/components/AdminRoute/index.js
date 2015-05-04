@@ -1,7 +1,7 @@
 "use strict";
 
 import React, { PropTypes } from "react";
-import { RouteHandler } from "react-router";
+import { RouteHandler, Link } from "react-router";
 import DocumentTitle from "react-document-title";
 import storeComponent from "../../decorators/storeComponent";
 import SessionActionCreators from "../../actions/SessionActionCreators";
@@ -41,6 +41,12 @@ export default class AdminRoute extends React.Component {
             <h1>koa server <small>Admin</small></h1>
             { isAuthed &&
               <div className="admin-controls">
+                <nav>
+                  <ul>
+                    <li><Link to="admin">Dashboard</Link></li>
+                    <li><Link to="users">Users</Link></li>
+                  </ul>
+                </nav>
                 <button onClick={ this.handleLogout }>Logout</button>
               </div>
             }

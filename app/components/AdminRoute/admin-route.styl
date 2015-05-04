@@ -9,7 +9,7 @@
   align-content flex-start
   padding-top 6rem
 
-  header
+  .header
     position absolute
     top 0
     left 0
@@ -19,3 +19,14 @@
 
     h1
       float left
+
+    nav
+      float left
+      margin-right 1rem
+      cf()
+
+      li
+        float left
+
+        & + li
+          margin-left 1rem

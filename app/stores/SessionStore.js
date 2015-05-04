@@ -11,7 +11,7 @@ class SessionStore {
     this.state = new Map({
       loading: false,
       nextPath: null,
-      user: false
+      token: false
     });
 
     this.bindActions(SessionActionCreators);
@@ -20,7 +20,7 @@ class SessionStore {
   static isAuthed() {
     let session = this.getState();
 
-    return session.get("user") !== false;
+    return session.get("token") !== false;
   }
 
   onLogin() {
@@ -31,11 +31,11 @@ class SessionStore {
     this.setState(state);
   }
 
-  onLoginSuccess(user) {
+  onLoginSuccess(token) {
     let state = this.state.merge({
       loading: false,
       nextPath: null,
-      user: user
+      token: token
     });
 
     this.setState(state);
@@ -58,8 +58,8 @@ class SessionStore {
     this.setState(state);
   }
 
-  onLogout(user) {
-    let state = this.state.merge({ user: false });
+  onLogout(token) {
+    let state = this.state.merge({ token: false });
 
     this.setState(state);
   }
