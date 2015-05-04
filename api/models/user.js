@@ -5,7 +5,22 @@ var SALT_WORK_FACTOR = 10;
 
 module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define('User', {
-    email: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      validate: function(value, next) {
+        User.find({ where: { email: value }, attributes: ["id"] })
+          .then(function(err, user) {
+            if (err) {
+              throw err;
+            }
+            if (user) {
+              throw new Error("Email " + value + " already taken.");
+            }
+
+            next();
+          });
+      }
+    },
     password: {
       type: DataTypes.STRING,
       set: function(v) {
@@ -17,6 +32,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     lastLogin: DataTypes.DATE
   }, {
+    instanceMethods: {
+      verifyPassword: function(password) {
+        return bcrypt.compareSync(password, this.password);
+      }
+    },
     classMethods: {
       associate: function(models) {
         // associations can be defined here

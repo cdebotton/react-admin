@@ -1,6 +1,7 @@
 "use strict";
 
 import Router from "koa-router";
+import NotFoundError from "../lib/NotFoundError";
 import ResourceExistsError from "../lib/ResourceExistsError";
 import * as helpers from "../../app/utils/helpers";
 import { User } from "../models";
@@ -20,7 +21,11 @@ router.get("/users", function *(next) {
 });
 
 router.get("/users/:id", function *(next) {
+  let user = User.find(this.params.id);
 
+  if (!user) {
+    throw new NotFoundError(`Can't find user with id ${this.params.id}.`);
+  }
 });
 
 router.post("/users", function *(next) {

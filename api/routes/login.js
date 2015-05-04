@@ -11,7 +11,7 @@ router.post("/login", function *(next) {
 
   let user = yield User.find({
     where: { email },
-    attributes: ["id"]
+    attributes: ["id", "password"]
   });
 
   if (!user) {
@@ -19,7 +19,9 @@ router.post("/login", function *(next) {
     throw new NotFoundError("User not found.");
   }
 
-  this.body = this.request.body;
+  let isAuthed = user.verifyPassword(password);
+
+  this.body = { authed: isAuthed };
 });
 
 export default router;
