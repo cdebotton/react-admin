@@ -10,20 +10,34 @@ import * as helpers from "../../utils/helpers";
 
 @storeComponent(SessionStore)
 export default class LoginRoute extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
   static contextTypes = {
     router: PropTypes.any.isRequired
   }
 
   static getStateFromStores(props) {
-    let { session } = SessionStore.getState();
+    let session = SessionStore.getState();
 
     return { session };
   }
 
-  handleSubmit(data) {
-    let credentials = helpers.mask(data, "email", "password");
+  static willTransitionTo(transition) {
+    if (SessionStore.isAuthed()) {
+      transition.redirect("admin");
+    }
+  }
 
-    SessionActionCreators.login(credentials);
+  async handleSubmit(data) {
+    let credentials = helpers.mask(data, "email", "password");
+    let nextPath = this.props.session.get("nextPath") || "admin";
+
+    await SessionActionCreators.login(credentials);
+
+    this.context.router.transitionTo(nextPath);
   }
 
   render() {

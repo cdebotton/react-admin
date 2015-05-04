@@ -1,53 +1,67 @@
 "use strict";
 
-import Immutable, { OrderedMap, Iterable } from "immutable";
+import immutable from "alt/utils/ImmutableUtil";
+import Immutable, { Map, Iterable } from "immutable";
 import alt from "../alt";
 import SessionActionCreators from "../actions/SessionActionCreators";
 
+@immutable
 class SessionStore {
   constructor() {
-    this.bindActions(SessionActionCreators);
-    this.session = new OrderedMap({
+    this.state = new Map({
       loading: false,
       nextPath: null,
-      status: 200
+      user: false
     });
-    this.on("init", this.setup);
-    this.on("bootstrap", this.setup);
+
+    this.bindActions(SessionActionCreators);
   }
 
   static isAuthed() {
-    let { session } = this.getState();
-    return session.has("token");
-  }
+    let session = this.getState();
 
-  setup() {
-    if (!OrderedMap.isOrderedMap(this.session)) {
-      this.session = Immutable.fromJS(this.session, (key, value) => {
-        let isIndexable = Iterable.isIndexed(value);
-        return isIndexable ? value.toList() : value.toOrderedMap();
-      });
-    }
+    return session.get("user") !== false;
   }
 
   onLogin() {
-    this.session = this.session.set("loading", true);
+    let state = this.state.merge({
+      loading: true
+    });
+
+    this.setState(state);
   }
 
-  onLoginSuccess(session) {
-    this.session = this.session.merge({
+  onLoginSuccess(user) {
+    let state = this.state.merge({
       loading: false,
-      nextPath: null
+      nextPath: null,
+      user: user
     });
+
+    this.setState(state);
   }
 
   onLoginError(err) {
-    this.session = this.session.set("loading", false);
+    let state = this.state.merge({
+      loading: false
+    });
+
     console.log(err);
+    this.setState(state);
   }
 
   onSetNextPath(path) {
-    this.session = this.session.set("nextPath", path);
+    let state = this.state.merge({
+      nextPath: path
+    });
+
+    this.setState(state);
+  }
+
+  onLogout(user) {
+    let state = this.state.merge({ user: false });
+
+    this.setState(state);
   }
 }
 

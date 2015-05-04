@@ -3,7 +3,9 @@
 import React, { PropTypes } from "react";
 import { Link, RouteHandler } from "react-router";
 import UserStore from "../../stores/UserStore";
+import authedComponent from "../../decorators/authedComponent";
 
+@authedComponent
 export default class AdminUsersRoute extends React.Component {
   render() {
     return (

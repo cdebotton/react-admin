@@ -2,26 +2,21 @@
 
 import Router from "koa-router";
 import NotFoundError from "../lib/NotFoundError";
+import * as AuthService from "../services/AuthService";
 import { User } from "../models";
 
 const router = new Router();
 
-router.post("/login", function *(next) {
-  const { email, password } = this.request.body;
+router.post("/login", AuthService.login(), function *(next) {
 
-  let user = yield User.find({
-    where: { email },
-    attributes: ["id", "password"]
-  });
+  this.body = this.user;
+  // this.body = { authed: isAuthed };
+});
 
-  if (!user) {
-    this.status = 404;
-    throw new NotFoundError("User not found.");
-  }
+router.del("/logout", function *(next) {
+  delete this.session.user;
 
-  let isAuthed = user.verifyPassword(password);
-
-  this.body = { authed: isAuthed };
+  this.body = { message: "Ok" };
 });
 
 export default router;

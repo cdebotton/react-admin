@@ -2,6 +2,8 @@
 
 import React, { PropTypes } from "react";
 
+const fnStatics = Object.getOwnPropertyNames(function() {});
+
 export default function storeComponent(...stores) {
   return function storeComponentDecorator(Target) {
     let { getStateFromStores, fetchData } = Target;
@@ -35,9 +37,10 @@ export default function storeComponent(...stores) {
       }
     }
 
-    if (fetchData) {
-      StoreComponent.fetchData = Target.fetchData;
-    }
+    let statics = Object.getOwnPropertyNames(Target)
+      .filter(fn => fnStatics.indexOf(fn) === -1);
+
+    statics.forEach(fn => StoreComponent[fn] = Target[fn]);
 
     return StoreComponent;
   };

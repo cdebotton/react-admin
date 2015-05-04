@@ -8,7 +8,9 @@ class SessionActionCreators {
     this.generateActions(
       "loginSuccess",
       "loginError",
-      "setNextPath"
+      "setNextPath",
+      "logoutSuccess",
+      "logoutError"
     );
   }
 
@@ -23,6 +25,22 @@ class SessionActionCreators {
     }
     catch (err) {
       this.actions.loginError(err);
+
+      return err;
+    }
+  }
+
+  async logout(user) {
+    this.dispatch(user);
+
+    try {
+      let session = await SessionAPI.logout(user);
+      this.actions.logoutSuccess(session);
+
+      return session;
+    }
+    catch (err) {
+      this.actions.logoutError(err);
 
       return err;
     }

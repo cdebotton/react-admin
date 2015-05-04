@@ -4,7 +4,6 @@ import http from "http";
 import path from "path";
 import compress from "koa-compress";
 import bodyparser from "koa-bodyparser";
-import passport from "koa-passport";
 import session from "koa-session";
 import statics from "koa-static";
 import mount from "koa-mount";
@@ -19,13 +18,9 @@ const ENV = process.env.NODE_ENV || "development";
 const KEY = process.env.KEY || "koa key";
 const KEY_SECRET = process.env.KEY_SECRET || "koa key secret";
 
-require("./passport");
-
 app.proxy = true;
 app.keys = [KEY, KEY_SECRET];
 app.use(session(app));
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(errorHandler());
 app.use(compress());
 app.use(bodyparser());

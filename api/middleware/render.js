@@ -5,15 +5,12 @@ import React from "react";
 import ReactRouter from "react-router";
 import PrettyError from "pretty-error";
 import alt from "../../app/alt";
+import SessionActionCreators from "../../app/actions/SessionActionCreators";
 import { fetchData } from "../../app/utils/helpers";
 import HTMLDocument from "../../app/components/HTMLDocument";
 import NotFoundError from "../lib/NotFoundError";
 import RedirectError from "../lib/RedirectError";
 
-const getAlt = () => {
-  delete require.cache[path.resolve("../../app/alt")];
-  return require("../../app/alt");
-}
 const doctype = "<!doctype>";
 const pe = new PrettyError();
 const ENV = process.env.NODE_ENV || "development";
@@ -31,6 +28,10 @@ export default function() {
     }
 
     const router = createReactRouter(this);
+
+    if (this.session.user) {
+      SessionActionCreators.loginSuccess(this.session.user);
+    }
 
     let [Handler, state] = yield getHandlerWithState(router);
     let data = yield fetchData(state);
