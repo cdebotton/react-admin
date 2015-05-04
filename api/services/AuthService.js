@@ -29,7 +29,7 @@ export let login = () => {
     }
 
     if (user.verifyPassword(password)) {
-      let token = yield Token.findOrCreate({
+      let [token, success] = yield Token.findOrCreate({
         where: {
           ipAddress: this.request.ip,
           UserId: user.id
@@ -43,7 +43,7 @@ export let login = () => {
         }
       });
 
-      this.session.token = token[0];
+      this.session.token = token;
 
       return yield next;
     }

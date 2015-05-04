@@ -1,6 +1,5 @@
 "use strict";
 
-import http from "http";
 import path from "path";
 import compress from "koa-compress";
 import bodyparser from "koa-bodyparser";
@@ -31,7 +30,7 @@ Object.keys(routes).forEach(routeName => {
 });
 app.use(render());
 
-const server = http.createServer(app.callback());
+const server = require("./sockets")(app);
 
 server.listen(PORT, () => {
   if (ENV === "development") {

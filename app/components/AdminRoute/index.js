@@ -15,8 +15,11 @@ export default class AdminRoute extends React.Component {
   }
 
   static getStateFromStores(props) {
+    let session = SessionStore.getState();
+
     return {
-      isAuthed: SessionStore.isAuthed()
+      isAuthed: SessionStore.isAuthed(),
+      email: session.getIn(["token", "user", "email"])
     };
   }
 
@@ -32,7 +35,7 @@ export default class AdminRoute extends React.Component {
   }
 
   render() {
-    let { isAuthed } = this.props;
+    let { isAuthed, email } = this.props;
 
     return (
       <DocumentTitle title="admin - debotton.io">
@@ -42,6 +45,7 @@ export default class AdminRoute extends React.Component {
             { isAuthed &&
               <div className="admin-controls">
                 <nav>
+                  <p>Welcome back, { email }</p>
                   <ul>
                     <li><Link to="admin">Dashboard</Link></li>
                     <li><Link to="users">Users</Link></li>
