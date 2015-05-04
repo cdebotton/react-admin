@@ -16,7 +16,6 @@ const routes = require("require-dir")("./routes");
 
 const PORT = process.env.PORT || 3000;
 const ENV = process.env.NODE_ENV || "development";
-
 const KEY = process.env.KEY || "koa key";
 const KEY_SECRET = process.env.KEY_SECRET || "koa key secret";
 
