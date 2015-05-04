@@ -2,6 +2,7 @@
 
 import request from "superagent";
 import { OrderedMap } from "immutable";
+import alt from "../alt";
 
 const PORT = parseInt(process.env.PORT, 10) || 3000;
 const HOST = process.env.HOST || "localhost";
@@ -22,6 +23,7 @@ export let get = (route, params) => {
 
   return new Promise((resolve, reject) => {
     let call = request.get(url)
+      .set("X-API-Token", getToken())
       .on("error", reject)
       .end((err, response) => {
         if (err) {
@@ -43,6 +45,7 @@ export let post = (route, params) => {
 
   return new Promise((resolve, reject) => {
     let call = request.post(url)
+      .set("X-API-Token", getToken())
       .send(params)
       .on("error", reject)
       .end((err, response) => {
@@ -65,6 +68,7 @@ export let put = (route, params) => {
 
   return new Promise((resolve, reject) => {
     let call = request.put(url)
+      .set("X-API-Token", getToken())
       .accept("application/json")
       .send(params)
       .on("error", reject)
@@ -88,6 +92,7 @@ export let del = (route, params) => {
 
   return new Promise((resolve, reject) => {
     let call = request.del(url)
+      .set("X-API-Token", getToken())
       .accept("application/json")
       .on("error", reject)
       .end((err, response) => {
@@ -126,6 +131,8 @@ const cancel = key => {
     }
   };
 };
+
+const getToken = () => alt.stores.SessionStore.getToken();
 
 const endRequest = key => {
   return data => {

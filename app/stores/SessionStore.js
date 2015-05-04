@@ -7,6 +7,8 @@ import SessionActionCreators from "../actions/SessionActionCreators";
 
 @immutable
 class SessionStore {
+  static displayName = "SessionStore"
+
   constructor() {
     this.state = new Map({
       loading: false,
@@ -21,6 +23,10 @@ class SessionStore {
     let session = this.getState();
 
     return session.get("token") !== false;
+  }
+
+  static getToken() {
+    return this.getState().getIn(["token", "key"]) || false;
   }
 
   onLogin() {
@@ -65,4 +71,4 @@ class SessionStore {
   }
 }
 
-export default alt.createStore(SessionStore, "SessionStore");
+export default alt.createStore(SessionStore);

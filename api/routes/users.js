@@ -4,11 +4,12 @@ import Router from "koa-router";
 import NotFoundError from "../lib/NotFoundError";
 import ResourceExistsError from "../lib/ResourceExistsError";
 import * as helpers from "../../app/utils/helpers";
+import * as AuthService from "../services/AuthService";
 import { User } from "../models";
 
 const router = new Router();
 
-router.get("/users", function *(next) {
+router.get("/users", AuthService.protect(), function *(next) {
   let users = yield User.findAll({
     attributes: ["id", "email", "lastLogin"]
   });

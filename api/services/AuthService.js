@@ -3,7 +3,8 @@
 import { User, Token } from "../models";
 
 const Errors = {
-  InvalidLogin: new Error("Invalid email address or password provided.")
+  invalidLogin: new Error("Invalid email address or password provided."),
+  invalidToken: new Error("Invalid api authorization token.")
 };
 
 export let login = () => {
@@ -15,7 +16,7 @@ export let login = () => {
     let { email, password } = this.request.body;
 
     if (!email || !password) {
-      this.app.emit("error", Errors.InvalidLogin, this);
+      this.app.emit("error", Errors.invalidLogin, this);
     }
 
     let user = yield User.find({
@@ -24,7 +25,7 @@ export let login = () => {
     });
 
     if (!user) {
-      this.app.emit("error", Errors.InvalidLogin, this);
+      this.app.emit("error", Errors.invalidLogin, this);
     }
 
     if (user.verifyPassword(password)) {
@@ -47,7 +48,28 @@ export let login = () => {
       return yield next;
     }
     else {
-      this.app.emit("error", Errors.InvalidLogin, this);
+      this.app.emit("error", Errors.invalidLogin, this);
+    }
+  };
+};
+
+export let protect = () => {
+  return function *(next) {
+    let tokenKey = this.request.headers["x-api-token"] || false;
+
+    if (!tokenKey) {
+      return this.app.emit("error", Errors.invalidToken, this);
+    }
+
+    let token = Token.find({
+      where: { key: tokenKey }
+    });
+
+    if (token) {
+      yield next;
+    }
+    else {
+      this.app.emit("error", Errors.invalidToken, this);
     }
   };
 };
