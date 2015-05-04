@@ -44,7 +44,19 @@ router.put("/users/:id", function *(next) {
 });
 
 router.del("/users/:id", function *(next) {
+  let user = yield User.find(this.params.id);
 
+  if (!user) {
+    throw new Error("User not found.");
+  }
+
+  try {
+    user.destroy();
+    this.body = true;
+  }
+  catch (err) {
+    throw err;
+  }
 });
 
 export default router;

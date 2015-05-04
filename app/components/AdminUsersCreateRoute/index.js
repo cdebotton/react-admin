@@ -16,6 +16,7 @@ export default class AdminUsersCreateRoute extends React.Component {
     this.handleCancel = this.handleCancel.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
   static contextTypes = {
     router: PropTypes.func.isRequired
   }
@@ -23,6 +24,7 @@ export default class AdminUsersCreateRoute extends React.Component {
   handleSubmit(model) {
     let user = helpers.mask(model, "email", "password");
     UserActionCreators.createUser(user);
+    this.context.router.transitionTo("users");
   }
 
   handleCancel(event) {

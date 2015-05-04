@@ -19,6 +19,10 @@ class UserAPI {
         return normalize(users, arrayOf(User));
       });
   }
+
+  destroyUser(userId) {
+    return request.del(`/api/users/${userId}`);
+  }
 }
 
 export default new UserAPI();

@@ -25,12 +25,17 @@ class UserStore {
       onAddUsersError: [
         UserActionCreators.CREATE_USER_ERROR,
         UserActionCreators.GET_USERS_ERROR
+      ],
+      onDestroyUser: [
+        UserActionCreators.DESTROY_USER
+      ],
+      onDestroyUserError: [
+        UserActionCreators.DESTROY_USER_ERROR
       ]
     });
   }
 
   static getUsers() {
-    console.log(this.getState().get("users").toJS());
     return this.getState().get("users");
   }
 
@@ -54,6 +59,24 @@ class UserStore {
   }
 
   onAddUsersError(err) {
+    console.log(err);
+  }
+
+  onDestroyUser(user) {
+    let { state } = this;
+    let userId = user.get("id").toString();
+
+    state = state.updateIn(["users"], u => u.delete(userId));
+    this.setState(state);
+  }
+
+  onDestroyUserError(response) {
+    let { err, user } = response;
+    let state = this.state.updateIn(["users"], u => u.merge({
+      [user.get("id")]: user
+    }));
+
+    this.setState(state);
     console.log(err);
   }
 }
