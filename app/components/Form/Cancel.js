@@ -4,6 +4,8 @@ import React, { PropTypes } from "react";
 import classNames from "classnames";
 
 export default class Cancel extends React.Component {
+  static _isReactFormElement = true
+
   render() {
     let { children, className, ...otherProps } = this.props;
 

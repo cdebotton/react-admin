@@ -4,6 +4,8 @@ import React, { PropTypes } from "react";
 import classNames from "classnames";
 
 export default class Submit extends React.Component {
+  static _isReactFormElement = true
+
   static contextTypes = {
     isValid: PropTypes.bool.isRequired
   }
