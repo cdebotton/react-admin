@@ -3,7 +3,7 @@
 import React, { PropTypes } from "react";
 import classNames from "classnames";
 import validator from "validator";
-import { OrderedMap } from "immutable";
+import { OrderedMap, List } from "immutable";
 import cloneWithProps from "react/lib/cloneWithProps";
 
 validator.extend("isRequired", (str) => {
@@ -18,10 +18,10 @@ export default class Form extends React.Component {
       formData: new OrderedMap()
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleValidate = this.handleValidate.bind(this);
-    this.handleUpdate = this.handleUpdate.bind(this);
     this.assignOwnership = this.assignOwnership.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleValidate = this.handleValidate.bind(this);
   }
 
   static propTypes = {
@@ -51,10 +51,6 @@ export default class Form extends React.Component {
   }
 
   handleValidate(value, validation) {
-    if (!validation) {
-      return [];
-    }
-
     let errors = validation.split("|").reduce((memo, v) => {
       let [validation, args] = v.split(":");
       let isValid;
@@ -69,10 +65,11 @@ export default class Form extends React.Component {
       isValid = validator[validation].apply(null, args);
 
       if (!isValid) {
-        memo.push(validation);
+        return memo.push(validation);
       }
+
       return memo;
-    }, []);
+    }, new List());
 
     return errors;
   }
@@ -104,10 +101,15 @@ export default class Form extends React.Component {
 
   assignOwnership(child) {
     if (child.props && child.props.children) {
-      return React.Children.map(child.props.children, this.assignOwnership);
+      let Child = child.type;
+      return (
+        <Child {...child.props}>
+          { React.Children.map(child.props.children, this.assignOwnership) }
+        </Child>
+      );
     }
     else if (child.type && child.type._isReactFormElement) {
-      return cloneWithProps.call(this, child);
+      return cloneWithProps(child);
     }
     else {
       return child;
@@ -129,7 +131,7 @@ export default class Form extends React.Component {
         children
       } = field.props;
 
-      let errors = [];
+      let errors = new List();
 
       if (children) {
         registeredFields = registeredFields
@@ -173,6 +175,7 @@ export default class Form extends React.Component {
     return (
       <form
         { ...otherProps }
+        autoComplete="off"
         onSubmit={ this.handleSubmit }
         className={ classNames(["form", className, {
           valid: this.isValid()

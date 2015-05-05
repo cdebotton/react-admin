@@ -1,6 +1,7 @@
 "use strict";
 
 import React, { PropTypes } from "react";
+import { List } from "immutable";
 import classNames from "classnames";
 
 export default class Input extends React.Component {
@@ -22,7 +23,7 @@ export default class Input extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.state = {
       value: "",
-      errors: []
+      errors: new List()
     };
   }
 
@@ -49,7 +50,7 @@ export default class Input extends React.Component {
   render() {
     let { className, ...otherProps } = this.props;
     let { value, errors } = this.state;
-    let isValid = errors.length === 0;
+    let isValid = errors.size === 0;
 
     const isLabelVisible = value.trim() !== "";
 
