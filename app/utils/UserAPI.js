@@ -21,6 +21,11 @@ class UserAPI {
       .then(users => normalize(users, arrayOf(User)));
   }
 
+  updateUser(id, model) {
+    return request.put(`/api/users/${id}`, model)
+      .then(users => normalize(users, arrayOf(User)));
+  }
+
   destroyUser(userId) {
     return request.del(`/api/users/${userId}`);
   }

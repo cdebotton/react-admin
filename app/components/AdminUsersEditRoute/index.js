@@ -10,6 +10,10 @@ import authedComponent from "../../decorators/authedComponent";
 @authedComponent
 @storeComponent(UserStore)
 export default class AdminUserEditRoute extends React.Component {
+  static contextTypes = {
+    router: PropTypes.func.isRequired
+  }
+
   static async fetchData(router) {
     let { userId } = router.params;
     let user = await UserActionCreators.getUser(userId);
@@ -29,8 +33,11 @@ export default class AdminUserEditRoute extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(formData) {
-    console.log(formData);
+  async handleSubmit(formData) {
+    let userId = this.props.user.get("id");
+
+    UserActionCreators.updateUser(userId, formData);
+    this.context.router.transitionTo("users");
   }
 
   render() {
@@ -46,7 +53,7 @@ export default class AdminUserEditRoute extends React.Component {
               name="email"
               validation="isEmail|isRequired"
               placeholder="Email address"
-              value={ user.email } />
+              defaultValue={ user.email } />
           </div>
           <Submit>Save</Submit>
         </Form>

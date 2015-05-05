@@ -21,7 +21,7 @@ router.get("/users", AuthService.protect(), function *(next) {
   this.body = users;
 });
 
-router.get("/users/:id", function *(next) {
+router.get("/users/:id", AuthService.protect(), function *(next) {
   let user = yield User.find(this.params.id);
 
   if (!user) {
@@ -31,7 +31,7 @@ router.get("/users/:id", function *(next) {
   this.body = [user];
 });
 
-router.post("/users", function *(next) {
+router.post("/users", AuthService.protect(), function *(next) {
   let data = this.request.body;
 
   let exists = yield User.find({
@@ -47,11 +47,24 @@ router.post("/users", function *(next) {
   this.body = [user];
 });
 
-router.put("/users/:id", function *(next) {
+router.put("/users/:id", AuthService.protect(), function *(next) {
+  let user = yield User.find(this.params.id);
 
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  let {
+    email
+  } = this.request.body;
+
+  user.email = email;
+  user = yield user.save();
+
+  this.body = [user];
 });
 
-router.del("/users/:id", function *(next) {
+router.del("/users/:id", AuthService.protect(), function *(next) {
   let user = yield User.find(this.params.id);
 
   if (!user) {

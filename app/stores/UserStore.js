@@ -21,7 +21,8 @@ class UserStore {
       onAddUsersSuccess: [
         UserActionCreators.CREATE_USER_SUCCESS,
         UserActionCreators.GET_USERS_SUCCESS,
-        UserActionCreators.GET_USER_SUCCESS
+        UserActionCreators.GET_USER_SUCCESS,
+        UserActionCreators.UPDATE_USER_SUCCESS
       ],
       onAddUsersError: [
         UserActionCreators.CREATE_USER_ERROR,

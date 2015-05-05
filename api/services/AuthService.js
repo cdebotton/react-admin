@@ -34,7 +34,7 @@ export let login = () => {
           ipAddress: this.request.ip,
           UserId: user.id
         },
-        include: [{ model: User }],
+        include: [{ model: User, attributes: ["id", "email", "lastLogin"] }],
         defaults: {
           key: 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
             let r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);

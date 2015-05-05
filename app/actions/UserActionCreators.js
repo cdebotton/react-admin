@@ -12,6 +12,8 @@ class UserActionCreators {
       "getUsersError",
       "getUserSuccess",
       "getUserError",
+      "updateUserSuccess",
+      "updateUserError",
       "destroyUserSuccess",
       "destroyUserError"
     );
@@ -76,6 +78,19 @@ class UserActionCreators {
       this.actions.getUserError(err);
 
       return err;
+    }
+  }
+
+  async updateUser(userId, model) {
+    this.dispatch(userId, model);
+
+    try {
+      let user = await UserAPI.updateUser(userId, model);
+      this.actions.updateUserSuccess(user);
+      return user;
+    }
+    catch (err) {
+      this.actions.updateUserError(err);
     }
   }
 }
