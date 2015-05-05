@@ -10,6 +10,8 @@ class UserActionCreators {
       "createUserError",
       "getUsersSuccess",
       "getUsersError",
+      "getUserSuccess",
+      "getUserError",
       "destroyUserSuccess",
       "destroyUserError"
     );
@@ -59,6 +61,21 @@ class UserActionCreators {
     }
     catch (err) {
       this.actions.destroyUserError({ err, user });
+    }
+  }
+
+  async getUser(userId) {
+    this.dispatch(userId);
+
+    try {
+      let user = await UserAPI.getUser(userId);
+      this.actions.getUserSuccess(user);
+      return user;
+    }
+    catch (err) {
+      this.actions.getUserError(err);
+
+      return err;
     }
   }
 }

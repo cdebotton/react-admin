@@ -13,33 +13,25 @@ import AdminRoute from "./components/AdminRoute";
 import AdminLoginRoute from "./components/AdminLoginRoute";
 import AdminDashboardRoute from "./components/AdminDashboardRoute";
 import AdminUsersRoute from "./components/AdminUsersRoute";
+import AdminUsersEditRoute from "./components/AdminUsersEditRoute";
 import AdminUsersShowRoute from "./components/AdminUsersShowRoute";
 import AdminUsersCreateRoute from "./components/AdminUsersCreateRoute";
 import HomeRoute from "./components/HomeRoute";
 import NotFoundPage from "./components/NotFoundRoute";
 import NotFoundError from "./components/NotFoundError";
 
+/* eslint-disable */
 export default (
   <Route>
     <Route handler={ App }>
       <DefaultRoute handler={ HomeRoute } />
-      <Route
-        name="admin"
-        handler={ AdminRoute }>
+      <Route name="admin" handler={ AdminRoute }>
         <DefaultRoute handler={ AdminDashboardRoute } />
-        <Route
-          name="login"
-          handler={ AdminLoginRoute } />
-        <Route
-          name="users"
-          handler={ AdminUsersRoute }>
-          <DefaultRoute
-            name="users-show"
-            handler={ AdminUsersShowRoute } />
-          <Route
-            name="users-create"
-            path="create"
-            handler={ AdminUsersCreateRoute } />
+        <Route name="login" handler={ AdminLoginRoute } />
+        <Route name="users" handler={ AdminUsersRoute }>
+          <DefaultRoute handler={ AdminUsersShowRoute } />
+          <Route name="createUser" path="new" handler={ AdminUsersCreateRoute } />
+          <Route name="editUser" path=":userId" handler={ AdminUsersEditRoute } />
         </Route>
       </Route>
       <NotFoundRoute handler={ NotFoundPage } />
@@ -49,3 +41,4 @@ export default (
     </Route>
   </Route>
 );
+/* eslint-enable */

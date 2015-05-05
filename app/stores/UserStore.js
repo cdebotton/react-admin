@@ -20,7 +20,8 @@ class UserStore {
       onCreateUser: UserActionCreators.CREATE_USER,
       onAddUsersSuccess: [
         UserActionCreators.CREATE_USER_SUCCESS,
-        UserActionCreators.GET_USERS_SUCCESS
+        UserActionCreators.GET_USERS_SUCCESS,
+        UserActionCreators.GET_USER_SUCCESS
       ],
       onAddUsersError: [
         UserActionCreators.CREATE_USER_ERROR,
@@ -37,6 +38,12 @@ class UserStore {
 
   static getUsers() {
     return this.getState().get("users");
+  }
+
+  static getUserById(id) {
+    let state = this.getState();
+
+    return state.getIn(["users", id]);
   }
 
   static isLoading() {

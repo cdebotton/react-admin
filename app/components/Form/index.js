@@ -21,6 +21,7 @@ export default class Form extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleValidate = this.handleValidate.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.assignOwnership = this.assignOwnership.bind(this);
   }
 
   static propTypes = {
@@ -50,6 +51,10 @@ export default class Form extends React.Component {
   }
 
   handleValidate(value, validation) {
+    if (!validation) {
+      return [];
+    }
+
     let errors = validation.split("|").reduce((memo, v) => {
       let [validation, args] = v.split(":");
       let isValid;
@@ -85,22 +90,7 @@ export default class Form extends React.Component {
   }
 
   componentWillMount() {
-    let fields = [];
-
-    React.Children.forEach(this.props.children, child => {
-      let { name, value, validation } = child.props;
-      let errors = [];
-
-      if (!name) {
-        return false;
-      }
-
-      if (validation) {
-        errors = this.handleValidate(value, validation);
-      }
-
-      fields.push({ name, value, errors });
-    });
+    let fields = this.registerInputs(this.props.children);
 
     if (fields.length) {
       let formData = fields.reduce((memo, { name, value, errors }) => {
@@ -110,6 +100,55 @@ export default class Form extends React.Component {
 
       this.setState({ formData });
     }
+  }
+
+  assignOwnership(child) {
+    if (child.props && child.props.children) {
+      return React.Children.map(child.props.children, this.assignOwnership);
+    }
+    else if (child.type && child.type._isReactFormElement) {
+      return cloneWithProps.call(this, child);
+    }
+    else {
+      return child;
+    }
+  }
+
+  registerInputs(fields) {
+    let registeredFields = [];
+
+    React.Children.forEach(fields, field => {
+      if (!field.props) {
+        return false;
+      }
+
+      let {
+        name,
+        value,
+        validation,
+        children
+      } = field.props;
+
+      let errors = [];
+
+      if (children) {
+        registeredFields = registeredFields
+          .concat(this.registerInputs(children));
+      }
+
+
+      if (!(field.type && field.type._isReactFormElement)) {
+        return false;
+      }
+
+      if (validation) {
+        errors = this.handleValidate(value, validation);
+      }
+
+      registeredFields.push({ name, value, errors });
+    });
+
+    return registeredFields;
   }
 
   handleSubmit(event) {
@@ -138,7 +177,7 @@ export default class Form extends React.Component {
         className={ classNames(["form", className, {
           valid: this.isValid()
         } ]) }>
-        { React.Children.map(children, cloneWithProps) }
+        { React.Children.map(children, this.assignOwnership) }
       </form>
     );
   }

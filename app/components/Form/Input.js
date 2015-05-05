@@ -4,6 +4,8 @@ import React, { PropTypes } from "react";
 import classNames from "classnames";
 
 export default class Input extends React.Component {
+  static _isReactFormElement = true
+
   static contextTypes = {
     onValidate: PropTypes.func.isRequired,
     onUpdate: PropTypes.func.isRequired

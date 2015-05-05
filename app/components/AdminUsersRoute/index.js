@@ -10,8 +10,7 @@ export default class AdminUsersRoute extends React.Component {
   render() {
     return (
       <div className="admin-users-route">
-        <h2>Users</h2>
-        <Link to="users-create">Create user</Link>
+        <h2><Link to="users">Users</Link></h2>
         <RouteHandler />
       </div>
     );

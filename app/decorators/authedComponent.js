@@ -4,8 +4,10 @@ import React, { PropTypes } from "react";
 import SessionActionCreators from "../actions/SessionActionCreators";
 import SessionStore from "../stores/SessionStore";
 
+const fnStatics = Object.getOwnPropertyNames(function() {});
+
 export default function authedComponent(Target) {
-  return class AuthenticatedComponent extends React.Component {
+  class AuthenticatedComponent extends React.Component {
     static willTransitionTo(transition, params, query) {
       if (!SessionStore.isAuthed()) {
         SessionActionCreators.setNextPath(transition.path);
@@ -20,5 +22,12 @@ export default function authedComponent(Target) {
           { ...this.state } />
       );
     }
-  };
+  }
+
+  let statics = Object.getOwnPropertyNames(Target)
+    .filter(fn => fnStatics.indexOf(fn) === -1);
+
+  statics.forEach(fn => AuthenticatedComponent[fn] = Target[fn]);
+
+  return AuthenticatedComponent;
 }

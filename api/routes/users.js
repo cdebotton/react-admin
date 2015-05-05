@@ -22,11 +22,13 @@ router.get("/users", AuthService.protect(), function *(next) {
 });
 
 router.get("/users/:id", function *(next) {
-  let user = User.find(this.params.id);
+  let user = yield User.find(this.params.id);
 
   if (!user) {
     throw new NotFoundError(`Can't find user with id ${this.params.id}.`);
   }
+
+  this.body = [user];
 });
 
 router.post("/users", function *(next) {

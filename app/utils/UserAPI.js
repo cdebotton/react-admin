@@ -8,16 +8,17 @@ let User = new Schema("users");
 class UserAPI {
   createUser(user) {
     return request.post("/api/users", user)
-      .then(users => {
-        return normalize(users, arrayOf(User));
-      });
+      .then(users => normalize(users, arrayOf(User)));
   }
 
   getUsers() {
     return request.get("/api/users")
-      .then(users => {
-        return normalize(users, arrayOf(User));
-      });
+      .then(users =>  normalize(users, arrayOf(User)));
+  }
+
+  getUser(id) {
+    return request.get(`/api/users/${id}`)
+      .then(users => normalize(users, arrayOf(User)));
   }
 
   destroyUser(userId) {

@@ -1,6 +1,7 @@
 "use strict";
 
 import React, { PropTypes } from  "react";
+import { Link } from "react-router";
 import DestroyButton from "../DestroyButton";
 import storeComponent from "../../decorators/storeComponent";
 import UserActionCreators from "../../actions/UserActionCreators";
@@ -22,10 +23,15 @@ export default class AdminUsersShowRoute extends React.Component {
   render() {
     return (
       <div className="admin-users-show">
+        <Link to="createUser">Create user</Link>
         <ul>
           { this.props.users.toList().map((user, key) => (
             <li key={ key }>
-              { user.get("email") }
+              <Link
+                to="editUser"
+                params={{ userId: user.get("id") }}>
+                { user.get("email") }
+              </Link>
               <DestroyButton
                 onClick={() => UserActionCreators.destroyUser(user)}>
                 Remove
