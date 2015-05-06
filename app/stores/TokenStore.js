@@ -3,6 +3,7 @@
 import alt from "../alt";
 import immutable from "alt/utils/ImmutableUtil";
 import { Map } from "immutable";
+import UserActionCreators from "../actions/UserActionCreators";
 import TokenActionCreators from "../actions/TokenActionCreators";
 
 @immutable
@@ -16,7 +17,8 @@ class TokenStore {
 
     this.bindListeners({
       onGetTokensSuccess: [
-        TokenActionCreators.GET_TOKENS_SUCCESS
+        TokenActionCreators.GET_TOKENS_SUCCESS,
+        UserActionCreators.GET_USER_SUCCESS
       ],
       onGetTokensError: [
         TokenActionCreators.GET_TOKENS_ERROR

@@ -31,7 +31,6 @@ export default (
         <Route name="login" handler={ AdminLoginRoute } />
         <Route name="users" handler={ AdminUsersRoute }>
           <DefaultRoute handler={ AdminUsersShowRoute } />
-          <Route name="tokens" handler={ AdminTokensRoute } />
           <Route name="createUser" path="new" handler={ AdminUsersCreateRoute } />
           <Route name="editUser" path=":userId" handler={ AdminUsersEditRoute } />
         </Route>

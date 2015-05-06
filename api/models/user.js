@@ -39,7 +39,14 @@ module.exports = function(sequelize, DataTypes) {
     },
     classMethods: {
       associate: function(models) {
-        User.hasMany(models.Token);
+        User.hasMany(models.Token, {
+          onDelete: "cascade",
+          hooks: true
+        });
+        User.hasOne(models.Profile, {
+          onDelete: "cascade",
+          hooks: true
+        });
       }
     }
   });

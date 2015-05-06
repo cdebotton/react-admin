@@ -13,7 +13,6 @@ export default class AdminUsersRoute extends React.Component {
         <h2>User Management</h2>
         <nav>
           <Link to="users">Users</Link>
-          <Link to="tokens">Tokens</Link>
         </nav>
         <RouteHandler />
       </div>

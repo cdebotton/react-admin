@@ -3,7 +3,14 @@
 import * as request from "./request";
 import { Schema, arrayOf, normalize } from "normalizr";
 
+let Token = new Schema("tokens");
+let Profile = new Schema("profiles");
 let User = new Schema("users");
+
+User.define({
+  Tokens: arrayOf(Token),
+  Profile: Profile
+});
 
 class UserAPI {
   createUser(user) {

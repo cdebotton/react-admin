@@ -5,7 +5,7 @@ import NotFoundError from "../lib/NotFoundError";
 import ResourceExistsError from "../lib/ResourceExistsError";
 import * as helpers from "../../app/utils/helpers";
 import * as AuthService from "../services/AuthService";
-import { User } from "../models";
+import { User, Profile, Token } from "../models";
 
 const router = new Router();
 
@@ -22,7 +22,10 @@ router.get("/users", AuthService.protect(), function *(next) {
 });
 
 router.get("/users/:id", AuthService.protect(), function *(next) {
-  let user = yield User.find(this.params.id);
+  let user = yield User.findOne({
+    where: { id: this.params.id },
+    include: [{ model: Token }, {model: Profile }]
+  });
 
   if (!user) {
     throw new NotFoundError(`Can't find user with id ${this.params.id}.`);
@@ -43,6 +46,7 @@ router.post("/users", AuthService.protect(), function *(next) {
   }
 
   let user = yield User.create(helpers.mask(data, "email", "password"));
+  let profile = yield Profile.create({ UserId: user.id });
 
   this.body = [user];
 });
@@ -65,7 +69,10 @@ router.put("/users/:id", AuthService.protect(), function *(next) {
 });
 
 router.del("/users/:id", AuthService.protect(), function *(next) {
-  let user = yield User.find(this.params.id);
+  let user = yield User.find({
+    where: { id: this.params.id },
+    include: [{ model: Profile }]
+  });
 
   if (!user) {
     throw new Error("User not found.");
@@ -73,7 +80,7 @@ router.del("/users/:id", AuthService.protect(), function *(next) {
 
   try {
     user.destroy();
-    this.body = true;
+    this.body = { message: "Ok" };
   }
   catch (err) {
     throw err;

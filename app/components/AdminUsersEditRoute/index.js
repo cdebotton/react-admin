@@ -4,11 +4,12 @@ import React, { PropTypes } from "react";
 import Form, { Input, Submit } from "../Form";
 import UserActionCreators from "../../actions/UserActionCreators";
 import UserStore from "../../stores/UserStore";
+import ProfileStore from "../../stores/ProfileStore";
 import storeComponent from "../../decorators/storeComponent";
 import authedComponent from "../../decorators/authedComponent";
 
 @authedComponent
-@storeComponent(UserStore)
+@storeComponent(UserStore, ProfileStore)
 export default class AdminUserEditRoute extends React.Component {
   static contextTypes = {
     router: PropTypes.func.isRequired
@@ -23,9 +24,11 @@ export default class AdminUserEditRoute extends React.Component {
 
   static getStateFromStores(router) {
     let { userId } = router.params;
-    let user = UserStore.getUserById(userId);
 
-    return { user };
+    return {
+      user: UserStore.getUserById(userId),
+      profile: ProfileStore.getByUserId(userId)
+     };
   }
 
   constructor(props) {
@@ -41,8 +44,9 @@ export default class AdminUserEditRoute extends React.Component {
   }
 
   render() {
-    let { user } = this.props;
+    let { user, profile } = this.props;
     user = user ? user.toJS() : {};
+    profile = profile ? profile.toJS() : {};
 
     return (
       <div className="admin-users-edit-route">
@@ -54,6 +58,16 @@ export default class AdminUserEditRoute extends React.Component {
               validation="isEmail|isRequired"
               placeholder="Email address"
               defaultValue={ user.email } />
+            <Input
+              name="firstName"
+              validation="isLength:2|isRequired"
+              placeholder="First name"
+              defaultValue={ profile.firstName } />
+            <Input
+              name="lastName"
+              validation="isLength:2|isRequired"
+              placeholder="Last name"
+              defaultValue={ profile.lastName } />
           </div>
           <Submit>Save</Submit>
         </Form>
