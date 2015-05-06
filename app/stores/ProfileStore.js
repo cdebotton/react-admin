@@ -1,9 +1,9 @@
 "use strict";
 
 import alt from "../alt";
+import UserStore from "./UserStore";
 import immutable from "alt/utils/ImmutableUtil";
 import { Map } from "immutable";
-import UserStore from "../stores/UserStore";
 import UserActionCreators from "../actions/UserActionCreators";
 
 @immutable
@@ -17,6 +17,7 @@ class ProfileStore {
 
     this.bindListeners({
       onGetProfileSuccess: [
+        UserActionCreators.UPDATE_USER_SUCCESS,
         UserActionCreators.GET_USER_SUCCESS
       ]
     });
@@ -26,7 +27,7 @@ class ProfileStore {
     let state = this.getState();
     let profiles = state.get("profiles").toList();
 
-    return state.filter(p => p.get("UserId") === userId);
+    return profiles.find(p => p.get("UserId") === parseInt(userId, 10));
   }
 
   onGetProfileSuccess(response) {

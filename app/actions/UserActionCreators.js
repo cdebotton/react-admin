@@ -72,6 +72,7 @@ class UserActionCreators {
     try {
       let user = await UserAPI.getUser(userId);
       this.actions.getUserSuccess(user);
+
       return user;
     }
     catch (err) {

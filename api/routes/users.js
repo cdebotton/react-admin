@@ -53,17 +53,29 @@ router.post("/users", AuthService.protect(), function *(next) {
 
 router.put("/users/:id", AuthService.protect(), function *(next) {
   let user = yield User.find(this.params.id);
+  let profile = yield user.getProfile();
 
   if (!user) {
     throw new Error("User not found");
   }
 
   let {
-    email
+    email,
+    firstName,
+    lastName
   } = this.request.body;
 
   user.email = email;
+  profile.firstName = firstName;
+  profile.lastName = lastName;
+
+  profile = yield profile.save();
   user = yield user.save();
+
+  user = yield User.findOne({
+    where: { id: user.id },
+    include: [{ model: Profile }]
+  });
 
   this.body = [user];
 });
