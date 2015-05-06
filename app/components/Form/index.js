@@ -77,33 +77,26 @@ export default class Form extends React.Component {
   handleUpdate(name, value, errors) {
     let { formData } = this.state;
 
-    if (this._processing) {
-      return this._callbacks[name] = () => {
-        this.handleUpdate(name, value, errors);
-      };
-    }
-
-    this._processing = true;
-
     formData = formData.update(name, v => {
       return OrderedMap.isOrderedMap(v) ?
         v.merge({ value, errors }) :
         new OrderedMap({ value, errors });
     });
 
-    this.setState({ formData }, () => {
-      this._processing = false;
-      delete this._callbacks[name];
-
-      Object.keys(this._callbacks).forEach(key => {
-        let cb = this._callbacks[key];
-        cb();
-      });
-    });
+    this.setState({ formData });
   }
 
-  processUpdate(name, value, errors) {
+  componentWillMount() {
+    let fields = this.registerInputs(this.props.children);
 
+    if (fields.length) {
+      let formData = fields.reduce((memo, { name, value, errors }) => {
+        memo = memo.set(name, new OrderedMap({ value, errors }));
+        return memo;
+      }, new OrderedMap());
+
+      this.setState({ formData });
+    }
   }
 
   assignOwnership(child) {
@@ -121,6 +114,42 @@ export default class Form extends React.Component {
     else {
       return child;
     }
+  }
+
+  registerInputs(fields) {
+    let registeredFields = [];
+
+    React.Children.forEach(fields, field => {
+      if (!field.props) {
+        return false;
+      }
+
+      let {
+        name,
+        validation,
+        children,
+        defaultValue: value
+      } = field.props;
+
+      let errors = new List();
+
+      if (children) {
+        registeredFields = registeredFields
+          .concat(this.registerInputs(children));
+      }
+
+      if (!(field.type && field.type._isReactFormElement && field.props.name)) {
+        return false;
+      }
+
+      if (validation) {
+        errors = this.handleValidate(value, validation);
+      }
+
+      registeredFields.push({ name, value, errors });
+    });
+
+    return registeredFields;
   }
 
   handleSubmit(event) {

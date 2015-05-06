@@ -33,9 +33,7 @@ export default class Input extends React.Component {
     let { onValidate, onUpdate } = this.context;
     let errors = onValidate(value, this.props.validation);
 
-    this.setState({ value, errors }, () => {
-      onUpdate(name, value, errors);
-    });
+    this.setState({ value, errors });
   }
 
   handleChange(event) {
