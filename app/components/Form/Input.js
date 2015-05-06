@@ -1,8 +1,10 @@
 "use strict";
 
-import React, { PropTypes } from "react";
+import React, { PropTypes } from "react/addons";
 import { List } from "immutable";
 import classNames from "classnames";
+
+const { CSSTransitionGroup } = React.addons;
 
 export default class Input extends React.Component {
   static _isReactFormElement = true
@@ -66,6 +68,11 @@ export default class Input extends React.Component {
           visible: isLabelVisible
         }] )}>
           { otherProps.placeholder }
+          <CSSTransitionGroup transitionName="validate">
+            { isValid &&
+              <i className="fa fa-check" />
+            }
+          </CSSTransitionGroup>
         </label>
       </div>
     );
