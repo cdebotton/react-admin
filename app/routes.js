@@ -16,6 +16,7 @@ import AdminUsersRoute from "./components/AdminUsersRoute";
 import AdminUsersEditRoute from "./components/AdminUsersEditRoute";
 import AdminUsersShowRoute from "./components/AdminUsersShowRoute";
 import AdminUsersCreateRoute from "./components/AdminUsersCreateRoute";
+import AdminTokensRoute from"./components/AdminTokensRoute";
 import HomeRoute from "./components/HomeRoute";
 import NotFoundPage from "./components/NotFoundRoute";
 import NotFoundError from "./components/NotFoundError";
@@ -30,6 +31,7 @@ export default (
         <Route name="login" handler={ AdminLoginRoute } />
         <Route name="users" handler={ AdminUsersRoute }>
           <DefaultRoute handler={ AdminUsersShowRoute } />
+          <Route name="tokens" handler={ AdminTokensRoute } />
           <Route name="createUser" path="new" handler={ AdminUsersCreateRoute } />
           <Route name="editUser" path=":userId" handler={ AdminUsersEditRoute } />
         </Route>

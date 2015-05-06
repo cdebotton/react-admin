@@ -12,9 +12,19 @@ router.post("/login", AuthService.login(), function *(next) {
 });
 
 router.del("/logout", function *(next) {
-  let token = yield Token.find(this.session.token.id);
-  token.destroy();
+  let token = yield Token.find({
+    where: {
+      key: this.session.token.key,
+      ipAddress: this.request.ip
+    }
+  });
+
+  if (token) {
+    yield token.destroy();
+  }
+
   delete this.session.token;
+
   this.body = { message: "Ok" };
 });
 
