@@ -22,8 +22,10 @@ export default class AdminUsersShowRoute extends React.Component {
 
   render() {
     return (
-      <div className="admin-users-show">
-        <Link to="createUser">Create user</Link>
+      <div className="admin-users-show-route">
+        <nav>
+          <Link to="createUser">Create user</Link>
+        </nav>
         <ul>
           { this.props.users.toList().map((user, key) => (
             <li key={ key }>

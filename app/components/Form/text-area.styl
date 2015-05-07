@@ -1,0 +1,25 @@
+@import "nib"
+@import "jeet"
+@import "rupture"
+@import "input"
+
+.text-area
+  @extend .input
+
+  textarea
+    padding 0 1rem
+    width 100%
+    border none
+    border-bottom 1px solid #ccc
+    font-size 1.414rem
+    font-weight 300
+    resize none
+    background-image linear-gradient(0deg, white 0%, black 1%, white 2%)
+    line-height 30px
+    background-size 1px 30px
+
+    &:focus
+      outline none
+
+      & + .underline
+        width 100%

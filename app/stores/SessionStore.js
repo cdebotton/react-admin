@@ -3,10 +3,12 @@
 import immutable from "alt/utils/ImmutableUtil";
 import Immutable, { Map, Iterable } from "immutable";
 import alt from "../alt";
+import { createStore } from "../decorators/alt";
 import SessionActionCreators from "../actions/SessionActionCreators";
 
+@createStore(alt)
 @immutable
-class SessionStore {
+export default class SessionStore {
   static displayName = "SessionStore"
 
   constructor() {
@@ -70,5 +72,3 @@ class SessionStore {
     this.setState(state);
   }
 }
-
-export default alt.createStore(SessionStore);

@@ -2,8 +2,10 @@
 
 import alt from "../alt";
 import UserAPI from "../utils/UserAPI";
+import { createActions } from "../decorators/alt";
 
-class UserActionCreators {
+@createActions(alt)
+export default class UserActionCreators {
   constructor() {
     this.generateActions(
       "createUserSuccess",
@@ -95,5 +97,3 @@ class UserActionCreators {
     }
   }
 }
-
-export default alt.createActions(UserActionCreators);

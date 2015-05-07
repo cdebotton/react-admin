@@ -1,12 +1,14 @@
 "use strict";
 
 import alt from "../alt";
+import { createStore } from "../decorators/alt";
 import immutable from "alt/utils/ImmutableUtil";
 import Immutable, { Map, Iterable } from "immutable";
 import UserActionCreators from "../actions/UserActionCreators";
 
+@createStore(alt)
 @immutable
-class UserStore {
+export default class UserStore {
   static displayName = "UserStore"
 
   state = Map({
@@ -45,6 +47,10 @@ class UserStore {
     let state = this.getState();
 
     return state.getIn(["users", id]);
+  }
+
+  static getLatestUser() {
+    return this.getState().get("users").toList().last();
   }
 
   static isLoading() {
@@ -88,5 +94,3 @@ class UserStore {
     console.log(err);
   }
 }
-
-export default alt.createStore(UserStore);

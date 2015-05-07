@@ -1,7 +1,7 @@
 "use strict";
 
 import React, { PropTypes } from "react";
-import Form, { Input, Submit } from "../Form";
+import Form, { Input, TextArea, Submit, Cancel } from "../Form";
 import UserActionCreators from "../../actions/UserActionCreators";
 import UserStore from "../../stores/UserStore";
 import ProfileStore from "../../stores/ProfileStore";
@@ -56,8 +56,8 @@ export default class AdminUserEditRoute extends React.Component {
 
     return (
       <div className="admin-users-edit-route">
-        <h2>Edit { user.get("email") }</h2>
         <Form onSubmit={ this.handleSubmit }>
+          <h2>Edit { user.get("email") }</h2>
           <div className="form-row">
             <Input
               name="email"
@@ -75,15 +75,32 @@ export default class AdminUserEditRoute extends React.Component {
               placeholder="Last name"
               defaultValue={ profile.get("lastName") } />
           </div>
-          <Submit>Save</Submit>
+          <div className="form-row">
+            <TextArea
+              name="biography"
+              placeholder={ `About ${profile.get("firstName")}` }
+              defaultValue={ profile.get("biography") } />
+          </div>
+          <div className="form-row">
+            <Submit>Save</Submit>
+            <Cancel
+              onClick={ () => this.context.router.transitionTo("users") }>
+              Cancel
+            </Cancel>
+          </div>
         </Form>
-        <h2>Active Sessions</h2>
-        <dl>
-          { tokens.toList().map((token, key) => [
-            <dt>SSID: { token.get("key") }</dt>,
-            <dd>IP Address: { token.get("ipAddress") }</dd>
-          ]) }
-        </dl>
+        <div className="roles">
+          <h2>Roles</h2>
+        </div>
+        <div className="active-session">
+          <h2>Active Sessions</h2>
+          <dl>
+            { tokens.toList().map((token, key) => [
+              <dt>SSID: { token.get("key") }</dt>,
+              <dd>IP Address: { token.get("ipAddress") }</dd>
+            ]) }
+          </dl>
+        </div>
       </div>
     );
   }

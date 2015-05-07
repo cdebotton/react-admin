@@ -2,8 +2,10 @@
 
 import alt from "../alt";
 import SessionAPI from "../utils/SessionAPI";
+import { createActions } from "../decorators/alt";
 
-class SessionActionCreators {
+@createActions(alt)
+export default class SessionActionCreators {
   constructor() {
     this.generateActions(
       "loginSuccess",
@@ -46,5 +48,3 @@ class SessionActionCreators {
     }
   }
 }
-
-export default alt.createActions(SessionActionCreators);

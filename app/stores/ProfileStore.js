@@ -1,13 +1,15 @@
 "use strict";
 
-import alt from "../alt";
-import UserStore from "./UserStore";
-import immutable from "alt/utils/ImmutableUtil";
 import { Map } from "immutable";
+import immutable from "alt/utils/ImmutableUtil";
+import alt from "../alt";
+import { createStore } from "../decorators/alt";
+import UserStore from "./UserStore";
 import UserActionCreators from "../actions/UserActionCreators";
 
+@createStore(alt)
 @immutable
-class ProfileStore {
+export default class ProfileStore {
   static displayName = "ProfileStore"
 
   constructor() {
@@ -37,5 +39,3 @@ class ProfileStore {
     this.setState(state);
   }
 }
-
-export default alt.createStore(ProfileStore);

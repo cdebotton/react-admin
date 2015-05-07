@@ -1,13 +1,15 @@
 "use strict";
 
 import alt from "../alt";
+import { createStore } from "../decorators/alt";
 import immutable from "alt/utils/ImmutableUtil";
 import { Map } from "immutable";
 import UserActionCreators from "../actions/UserActionCreators";
 import TokenActionCreators from "../actions/TokenActionCreators";
 
+@createStore(alt)
 @immutable
-class TokenStore {
+export default class TokenStore {
   static displayName = "TokenStore"
 
   constructor() {
@@ -43,5 +45,3 @@ class TokenStore {
     console.log(err);
   }
 }
-
-export default alt.createStore(TokenStore);

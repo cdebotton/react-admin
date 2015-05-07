@@ -62,12 +62,14 @@ router.put("/users/:id", AuthService.protect(), function *(next) {
   let {
     email,
     firstName,
-    lastName
+    lastName,
+    biography
   } = this.request.body;
 
   user.email = email;
   profile.firstName = firstName;
   profile.lastName = lastName;
+  profile.biography = biography;
 
   profile = yield profile.save();
   user = yield user.save();

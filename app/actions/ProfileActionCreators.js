@@ -1,11 +1,11 @@
 "use strict";
 
 import alt from "../alt";
+import { createActions } from "../decorators/alt";
 
-class ProfileActionCreators {
+@createActions(alt)
+export default class ProfileActionCreators {
   constructor() {
 
   }
 }
-
-export default alt.createActions(ProfileActionCreators);

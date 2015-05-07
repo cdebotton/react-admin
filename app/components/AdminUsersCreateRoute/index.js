@@ -1,6 +1,7 @@
 "use strict";
 
 import React, { PropTypes } from "react";
+import UserStore from "../../stores/UserStore";
 import UserActionCreators from "../../actions/UserActionCreators";
 import * as helpers from "../../utils/helpers";
 import Form, {
@@ -21,10 +22,13 @@ export default class AdminUsersCreateRoute extends React.Component {
     router: PropTypes.func.isRequired
   }
 
-  handleSubmit(model) {
-    let user = helpers.mask(model, "email", "password");
-    UserActionCreators.createUser(user);
-    this.context.router.transitionTo("users");
+  async handleSubmit(model) {
+    let data = helpers.mask(model, "email", "password");
+
+    await UserActionCreators.createUser(data);
+    let user = UserStore.getLatestUser();
+
+    this.context.router.transitionTo("editUser", { userId: user.get("id") });
   }
 
   handleCancel(event) {

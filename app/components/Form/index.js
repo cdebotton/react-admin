@@ -51,6 +51,10 @@ export default class Form extends React.Component {
   }
 
   handleValidate(value, validation) {
+    if (!validation) {
+      return new List();
+    }
+
     let errors = validation.split("|").reduce((memo, v) => {
       let [validation, args] = v.split(":");
       let isValid;
@@ -187,6 +191,8 @@ export default class Form extends React.Component {
 
 import _Input from "./Input";
 export { _Input as Input };
+import _TextArea from "./TextArea";
+export { _TextArea as TextArea };
 import _Submit from "./Submit";
 export { _Submit as Submit };
 import _Cancel from "./Cancel";
