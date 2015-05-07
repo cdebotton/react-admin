@@ -56,7 +56,9 @@ export default class AdminUserEditRoute extends React.Component {
 
     return (
       <div className="admin-users-edit-route">
-        <Form onSubmit={ this.handleSubmit }>
+        <Form
+          className="form-col"
+          onSubmit={ this.handleSubmit }>
           <h2>Edit { user.get("email") }</h2>
           <div className="form-row">
             <Input
@@ -89,10 +91,10 @@ export default class AdminUserEditRoute extends React.Component {
             </Cancel>
           </div>
         </Form>
-        <div className="roles">
+        <div className="form-col roles">
           <h2>Roles</h2>
         </div>
-        <div className="active-session">
+        <div className="form-col active-session">
           <h2>Active Sessions</h2>
           <dl>
             { tokens.toList().map((token, key) => [

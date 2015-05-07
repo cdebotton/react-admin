@@ -47,6 +47,11 @@ module.exports = function(sequelize, DataTypes) {
           onDelete: "cascade",
           hooks: true
         });
+        User.belongsToMany(models.Role, {
+          onDelete: "cascade",
+          hooks: true,
+          through: "UserRole"
+        });
       }
     }
   });

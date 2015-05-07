@@ -5,6 +5,7 @@ import classNames from "classnames";
 import validator from "validator";
 import { OrderedMap, List } from "immutable";
 import cloneWithProps from "react/lib/cloneWithProps";
+import autobind from "../../decorators/autobind";
 
 validator.extend("isRequired", (str) => {
   return str.trim() !== "";
@@ -14,15 +15,13 @@ export default class Form extends React.Component {
   constructor(props) {
     super(props);
 
-    this._processing = false;
-    this._callbacks = {};
-    this.state = { formData: new OrderedMap() };
-
-    this.assignOwnership = this.assignOwnership.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleUpdate = this.handleUpdate.bind(this);
     this.handleValidate = this.handleValidate.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.assignOwnership = this.assignOwnership.bind(this);
   }
+
+  state = { formData: new OrderedMap() }
 
   static propTypes = {
     onSubmit: PropTypes.func.isRequired
@@ -80,7 +79,6 @@ export default class Form extends React.Component {
 
   handleUpdate(name, value, errors) {
     let { formData } = this.state;
-
     formData = formData.update(name, v => {
       return OrderedMap.isOrderedMap(v) ?
         v.merge({ value, errors }) :
