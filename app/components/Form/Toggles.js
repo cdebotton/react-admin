@@ -55,6 +55,22 @@ export class ToggleGroup extends React.Component {
     onUpdate: PropTypes.func.isRequired
   }
 
+  componentDidMount() {
+    let { toggleData } = this.state;
+    let { defaultValue, name } = this.props;
+
+    toggleData = toggleData.merge(defaultValue.reduce((memo, id) => {
+      memo[id] = true;
+      return memo;
+    }, {}));
+
+    this.setState({ toggleData }, () => {
+      let value = ToggleGroup.getValue(toggleData);
+
+      this.context.onUpdate(name, value);
+    });
+  }
+
   handleUpdateToggle(name, value) {
     let { toggleData } = this.state;
 
@@ -67,14 +83,16 @@ export class ToggleGroup extends React.Component {
   }
 
   render() {
-    let { children, className, defaultValue, ...otherProps } = this.props;
+    let { children, className, ...otherProps } = this.props;
+    let { toggleData } = this.state;
 
     return (
       <ul
         { ...otherProps }
         className={ classNames(["toggle-group", className]) }>
         { React.Children.map(children, (child, key) => {
-          let active = defaultValue.indexOf(child.props.value) > -1;
+          let value = child.props.value.toString();
+          let active = toggleData.get(value) === true;
 
           return cloneWithProps(child, { key, active });
         }) }
@@ -87,7 +105,6 @@ export class Toggle extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { active: false };
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -100,12 +117,10 @@ export class Toggle extends React.Component {
   }
 
   handleClick(event) {
-    let active = !this.state.active;
+    let active = !this.props.active;
     let { value } = this.props;
 
-    this.setState({ active }, () => {
-      this.context.onUpdateToggle(value, active);
-    });
+    this.context.onUpdateToggle(value, active);
   }
 
   render() {
