@@ -4,6 +4,7 @@ import alt from "../alt";
 import { createStore } from "alt/utils/decorators";
 import immutable from "alt/utils/ImmutableUtil";
 import Immutable, { Map, Iterable } from "immutable";
+import UserActionCreators from "../actions/UserActionCreators";
 import RoleActionCreators from "../actions/RoleActionCreators";
 
 @createStore(alt)
@@ -13,6 +14,7 @@ export default class RoleStore {
 
   state = Map({
     roles: Map({}),
+    userRoles: Map({}),
     loading: false
   })
 
