@@ -63,7 +63,7 @@ export class ToggleGroup extends React.Component {
     let toggleData = this.getFormData(this.props);
 
     this.setState({ toggleData }, () => {
-      this.context.onUpdate(name, toggleData.toArray());
+      this.context.onUpdate(name, toggleData);
     });
   }
 
@@ -79,7 +79,7 @@ export class ToggleGroup extends React.Component {
     }
 
     this.setState({ toggleData }, () => {
-      this.context.onUpdate(this.props.name, toggleData.toArray());
+      this.context.onUpdate(this.props.name, toggleData);
     });
   }
 

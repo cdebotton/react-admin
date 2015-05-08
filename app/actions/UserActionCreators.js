@@ -26,12 +26,12 @@ export default class UserActionCreators {
 
     try {
       let user = await UserAPI.createUser(data);
-      this.actions.createUserSuccess(user);
+      this.actions.createUserSuccess.defer(user);
 
       return user;
     }
     catch (err) {
-      this.actions.createUserError(err);
+      this.actions.createUserError.defer(err);
 
       return err;
     }
@@ -42,12 +42,12 @@ export default class UserActionCreators {
 
     try {
       let users = await UserAPI.getUsers();
-      this.actions.getUsersSuccess(users);
+      this.actions.getUsersSuccess.defer(users);
 
       return users;
     }
     catch (err) {
-      this.actions.getUsersError(err);
+      this.actions.getUsersError.defer(err);
 
       return err;
     }
@@ -60,11 +60,11 @@ export default class UserActionCreators {
       let userId = user.get("id");
       let success = await UserAPI.destroyUser(userId);
 
-      this.actions.destroyUserSuccess(true);
+      this.actions.destroyUserSuccess.defer(true);
       return true;
     }
     catch (err) {
-      this.actions.destroyUserError({ err, user });
+      this.actions.destroyUserError.defer({ err, user });
     }
   }
 
@@ -73,12 +73,12 @@ export default class UserActionCreators {
 
     try {
       let user = await UserAPI.getUser(userId);
-      this.actions.getUserSuccess(user);
+      this.actions.getUserSuccess.defer(user);
 
       return user;
     }
     catch (err) {
-      this.actions.getUserError(err);
+      this.actions.getUserError.defer(err);
 
       return err;
     }
@@ -89,11 +89,11 @@ export default class UserActionCreators {
 
     try {
       let user = await UserAPI.updateUser(userId, model);
-      this.actions.updateUserSuccess(user);
+      this.actions.updateUserSuccess.defer(user);
       return user;
     }
     catch (err) {
-      this.actions.updateUserError(err);
+      this.actions.updateUserError.defer(err);
     }
   }
 }

@@ -19,7 +19,7 @@ import Form, {
 } from "../Form";
 
 @authedComponent
-@storeComponent(UserStore, ProfileStore, TokenStore)
+@storeComponent(UserStore, ProfileStore, TokenStore, RoleStore)
 export default class AdminUserEditRoute extends React.Component {
   static contextTypes = {
     router: PropTypes.func.isRequired

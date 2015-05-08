@@ -88,7 +88,7 @@ router.put("/users/:id", AuthService.protect(), function *(next) {
 
   user = yield User.findOne({
     where: { id: user.id },
-    include: [{ model: Profile }]
+    include: [{ model: Profile }, { model: Role }, { model: Token }]
   });
 
   this.body = [user];
