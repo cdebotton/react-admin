@@ -6,7 +6,11 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Role.belongsToMany(models.User, { through: "UserRole" });
+        Role.belongsToMany(models.User, {
+          onDelete: "cascade",
+          hooks: true,
+          through: models.UserRole
+        });
       }
     }
   });

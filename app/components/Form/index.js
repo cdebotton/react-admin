@@ -36,7 +36,9 @@ export default class Form extends React.Component {
 
   isValid() {
     return this.state.formData.reduce((memo, field) => {
-      return memo && field.get("errors").size === 0;
+      return memo && (
+        !field.get("errors") || field.get("errors").size === 0
+      );
     }, true);
   }
 
@@ -77,7 +79,7 @@ export default class Form extends React.Component {
     return errors;
   }
 
-  handleUpdate(name, value, errors) {
+  handleUpdate(name, value, errors = new List()) {
     let { formData } = this.state;
     formData = formData.update(name, v => {
       return OrderedMap.isOrderedMap(v) ?
@@ -187,14 +189,11 @@ export default class Form extends React.Component {
   }
 }
 
-import _Input from "./Input";
-export { _Input as Input };
-import _TextArea from "./TextArea";
-export { _TextArea as TextArea };
-import _Submit from "./Submit";
-export { _Submit as Submit };
-import _Cancel from "./Cancel";
-export { _Cancel as Cancel };
+export Input from "./Input";
+export TextArea from "./TextArea";
+export { Toggle, ToggleGroup } from "./Toggles";
+export Submit from "./Submit";
+export Cancel from "./Cancel";
 
 if (process.env.BROWSER) {
   require("./form.styl");

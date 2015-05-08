@@ -6,20 +6,28 @@
   flex-flow row wrap
   width 100%
 
+  .form
+    display flex
+    flex-flow row wrap
+
   h2
     width 100%
 
   .form-col
+    box-sizing border-box
     padding 0 4rem
     position relative
 
     & + .form-col
       border-left 1px solid #f7f7f7
 
-  .form
+  .user-info
     width 50%
 
-  .roles, .active-sessions
+  .roles
+    width 25%
+
+  .active-sessions
     width 25%
 
   .form-row
@@ -42,3 +50,28 @@
 
   .form-row:last-child
     justify-content flex-end
+
+.session-list
+  display flex
+  flex-flow row wrap
+  width 100%
+  font-size 1.414rem
+
+  dt, dd
+    width 100%
+    padding 0
+    margin 0
+    font-weight 300
+
+  label
+    font-weight 400
+    tex-transform uppercase
+    background-color #777
+    border-color #000
+    color #fff
+    padding 0.5rem
+    font-size 1rem
+
+  p
+    text-indent 1rem
+

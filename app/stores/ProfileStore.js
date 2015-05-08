@@ -2,8 +2,8 @@
 
 import { Map } from "immutable";
 import immutable from "alt/utils/ImmutableUtil";
+import { createStore } from "alt/utils/decorators";
 import alt from "../alt";
-import { createStore } from "../decorators/alt";
 import UserStore from "./UserStore";
 import UserActionCreators from "../actions/UserActionCreators";
 

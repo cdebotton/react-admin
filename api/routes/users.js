@@ -5,7 +5,7 @@ import NotFoundError from "../lib/NotFoundError";
 import ResourceExistsError from "../lib/ResourceExistsError";
 import * as helpers from "../../app/utils/helpers";
 import * as AuthService from "../services/AuthService";
-import { User, Profile, Token } from "../models";
+import { User, Profile, Token, Role } from "../models";
 
 const router = new Router();
 
@@ -24,7 +24,7 @@ router.get("/users", AuthService.protect(), function *(next) {
 router.get("/users/:id", AuthService.protect(), function *(next) {
   let user = yield User.findOne({
     where: { id: this.params.id },
-    include: [{ model: Token }, {model: Profile }]
+    include: [{ model: Token }, {model: Profile }, { model: Role }]
   });
 
   if (!user) {
@@ -63,8 +63,19 @@ router.put("/users/:id", AuthService.protect(), function *(next) {
     email,
     firstName,
     lastName,
-    biography
+    biography,
+    roles
   } = this.request.body;
+
+  let roleModels = [];
+  for (let i in roles) {
+    let role = yield Role.findOne(roles[i]);
+    roleModels.push(role);
+  }
+
+  // console.log(roleModels);
+
+  // user = yield user.setRoles(roleModels);
 
   user.email = email;
   profile.firstName = firstName;

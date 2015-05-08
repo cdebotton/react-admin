@@ -2,7 +2,7 @@
 
 import alt from "../alt";
 import UserAPI from "../utils/UserAPI";
-import { createActions } from "../decorators/alt";
+import { createActions } from "alt/utils/decorators";
 
 @createActions(alt)
 export default class UserActionCreators {

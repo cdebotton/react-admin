@@ -1,7 +1,7 @@
 "use strict";
 
 import alt from "../alt";
-import { createStore } from "../decorators/alt";
+import { createStore } from "alt/utils/decorators";
 import immutable from "alt/utils/ImmutableUtil";
 import { Map } from "immutable";
 import UserActionCreators from "../actions/UserActionCreators";

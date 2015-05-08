@@ -50,7 +50,7 @@ module.exports = function(sequelize, DataTypes) {
         User.belongsToMany(models.Role, {
           onDelete: "cascade",
           hooks: true,
-          through: "UserRole"
+          through: models.UserRole
         });
       }
     }

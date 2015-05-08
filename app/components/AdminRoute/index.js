@@ -47,11 +47,20 @@ export default class AdminRoute extends React.Component {
                 <nav>
                   <p>Welcome back, { email }</p>
                   <ul>
-                    <li><Link to="admin">Dashboard</Link></li>
-                    <li><Link to="users">Users</Link></li>
+                    <li>
+                      <Link to="admin">Dashboard</Link>
+                    </li>
+                    <li>
+                      <Link to="users">Users</Link>
+                    </li>
+                    <li>
+                      <Link to="roles">Roles</Link>
+                    </li>
+                    <li>
+                      <button onClick={ this.handleLogout }>Logout</button>
+                    </li>
                   </ul>
                 </nav>
-                <button onClick={ this.handleLogout }>Logout</button>
               </div>
             }
           </header>

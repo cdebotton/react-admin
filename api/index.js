@@ -24,6 +24,32 @@ app.use(errorHandler());
 app.use(compress());
 app.use(bodyparser());
 app.use(statics(path.join(__dirname, "../public")));
+app.use(function *(next) {
+  let { url } = this.req;
+  let { User, Profile } = require("./models");
+
+  if (url === "/seed") {
+    let user = yield User.create({
+      email: "admin@cdb.io",
+      password: "testing"
+    });
+
+    let profile = yield Profile.create({
+      UserId: user.id,
+      firstName: "Christian",
+      lastName: "de Botton",
+      biography: "Hello, my name is Christian and I'm the Technical Director " +
+        "at Brooklyn United."
+    });
+
+    user = User.findOne(user.id);
+
+    this.body = user;
+  }
+  else {
+    yield next;
+  }
+});
 Object.keys(routes).forEach(routeName => {
   let route = routes[routeName];
   app.use(mount("/api", route.middleware()));

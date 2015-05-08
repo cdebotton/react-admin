@@ -2,7 +2,7 @@
 
 import alt from "../alt";
 import TokenAPI from "../utils/TokenAPI";
-import { createActions } from "../decorators/alt";
+import { createActions } from "alt/utils/decorators";
 
 @createActions(alt)
 export default class TokenActionCreators {

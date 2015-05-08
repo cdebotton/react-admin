@@ -1,0 +1,23 @@
+@import "nib"
+
+
+.toggle-group
+  list-style none
+  padding 0
+  display flex
+  flex-flow row wrap
+
+  .toggle
+    flex-grow 1
+    font-size 1.414rem
+    font-weight 300
+    border 1px solid #ccc
+    padding 1rem
+    margin 0.5rem
+    cursor pointer
+    text-align center
+
+    &:hover, &.active
+      background-color #333
+      border-color #000
+      color #fff

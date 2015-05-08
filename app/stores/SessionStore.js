@@ -1,9 +1,9 @@
 "use strict";
 
 import immutable from "alt/utils/ImmutableUtil";
+import { createStore } from "alt/utils/decorators";
 import Immutable, { Map, Iterable } from "immutable";
 import alt from "../alt";
-import { createStore } from "../decorators/alt";
 import SessionActionCreators from "../actions/SessionActionCreators";
 
 @createStore(alt)
