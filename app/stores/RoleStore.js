@@ -14,7 +14,6 @@ export default class RoleStore {
 
   state = Map({
     roles: Map({}),
-    userRoles: Map({}),
     loading: false
   })
 
