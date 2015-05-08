@@ -67,8 +67,8 @@ export default class UserStore {
 
   onAddUsersSuccess(response) {
     let { users: userResponse } = response.entities;
-    let state = this.state.updateIn(["users"], u => u.merge(userResponse));
-
+    let state = this.state.updateIn(["users"], u => u.mergeDeep(userResponse));
+    console.log(state.toJS());
     this.setState(state);
   }
 
@@ -86,7 +86,7 @@ export default class UserStore {
 
   onDestroyUserError(response) {
     let { err, user } = response;
-    let state = this.state.updateIn(["users"], u => u.merge({
+    let state = this.state.updateIn(["users"], u => u.mergeDeep({
       [user.get("id")]: user
     }));
 

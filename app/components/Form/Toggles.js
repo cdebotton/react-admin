@@ -2,17 +2,14 @@
 
 import React, { PropTypes } from "react";
 import cloneWithProps from "react/lib/cloneWithProps";
-import { Map } from "immutable";
+import { List } from "immutable";
 import classNames from "classnames";
 
 export class ToggleGroup extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      toggleData: new Map()
-    };
-
+    this.state = { toggleData: this.getFormData(props) };
     this.handleUpdateToggle = this.handleUpdateToggle.bind(this);
   }
 
@@ -44,41 +41,45 @@ export class ToggleGroup extends React.Component {
     }, []);
   }
 
+  static contextTypes = {
+    onValidate: PropTypes.func.isRequired,
+    onUpdate: PropTypes.func.isRequired
+  }
+
   getChildContext() {
     return {
       onUpdateToggle: this.handleUpdateToggle
     };
   }
 
-  static contextTypes = {
-    onValidate: PropTypes.func.isRequired,
-    onUpdate: PropTypes.func.isRequired
+  getFormData(props) {
+    let { defaultValue } = props;
+
+    return List.isList(defaultValue) ? defaultValue : new List(defaultValue);
   }
 
   componentDidMount() {
-    let { toggleData } = this.state;
-    let { defaultValue, name } = this.props;
-
-    toggleData = toggleData.merge(defaultValue.reduce((memo, id) => {
-      memo[id] = true;
-      return memo;
-    }, {}));
+    let { name } = this.props;
+    let toggleData = this.getFormData(this.props);
 
     this.setState({ toggleData }, () => {
-      let value = ToggleGroup.getValue(toggleData);
-
-      this.context.onUpdate(name, value);
+      this.context.onUpdate(name, toggleData.toArray());
     });
   }
 
-  handleUpdateToggle(name, value) {
+  handleUpdateToggle(id) {
     let { toggleData } = this.state;
+    let key = toggleData.findIndex(v => v === id);
 
-    toggleData = toggleData.set(name, value);
+    if (key > -1) {
+      toggleData = toggleData.splice(key, 1);
+    }
+    else {
+      toggleData = toggleData.push(id);
+    }
+
     this.setState({ toggleData }, () => {
-      let value = ToggleGroup.getValue(toggleData);
-
-      this.context.onUpdate(this.props.name, value);
+      this.context.onUpdate(this.props.name, toggleData.toArray());
     });
   }
 
@@ -91,8 +92,8 @@ export class ToggleGroup extends React.Component {
         { ...otherProps }
         className={ classNames(["toggle-group", className]) }>
         { React.Children.map(children, (child, key) => {
-          let value = child.props.value.toString();
-          let active = toggleData.get(value) === true;
+          let value = child.props.value;
+          let active = toggleData.indexOf(value) > -1;
 
           return cloneWithProps(child, { key, active });
         }) }
@@ -117,10 +118,7 @@ export class Toggle extends React.Component {
   }
 
   handleClick(event) {
-    let active = !this.props.active;
-    let { value } = this.props;
-
-    this.context.onUpdateToggle(value, active);
+    this.context.onUpdateToggle(this.props.value);
   }
 
   render() {

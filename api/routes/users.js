@@ -53,7 +53,9 @@ router.post("/users", AuthService.protect(), function *(next) {
 });
 
 router.put("/users/:id", AuthService.protect(), function *(next) {
-  let user = yield User.find(this.params.id);
+  let user = yield User.find(this.params.id, {
+    include: [{ model: Profile }, { model: Role }, { model: Token }]
+  });
   let profile = yield user.getProfile();
 
   if (!user) {
