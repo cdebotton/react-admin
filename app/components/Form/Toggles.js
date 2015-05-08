@@ -21,7 +21,8 @@ export class ToggleGroup extends React.Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.string,
-    validate: PropTypes.string
+    validate: PropTypes.string,
+    defaultValue: PropTypes.any
   }
 
   static childContextTypes = {
@@ -66,14 +67,16 @@ export class ToggleGroup extends React.Component {
   }
 
   render() {
-    let { children, className, ...otherProps } = this.props;
+    let { children, className, defaultValue, ...otherProps } = this.props;
 
     return (
       <ul
         { ...otherProps }
         className={ classNames(["toggle-group", className]) }>
         { React.Children.map(children, (child, key) => {
-          return cloneWithProps(child, { key });
+          let active = defaultValue.indexOf(child.props.value) > -1;
+
+          return cloneWithProps(child, { key, active });
         }) }
       </ul>
     );
@@ -106,8 +109,8 @@ export class Toggle extends React.Component {
   }
 
   render() {
-    let { children, className, ...otherProps } = this.props;
-    let { active } = this.state;
+    let { children, className, active, ...otherProps } = this.props;
+    let { defaultValue } = this.context;
 
     return (
       <li

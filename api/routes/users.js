@@ -11,7 +11,8 @@ const router = new Router();
 
 router.get("/users", AuthService.protect(), function *(next) {
   let users = yield User.findAll({
-    attributes: ["id", "email", "lastLogin"]
+    attributes: ["id", "email", "lastLogin"],
+    include: [{ model: Role }]
   });
 
   if (!users) {
@@ -73,9 +74,7 @@ router.put("/users/:id", AuthService.protect(), function *(next) {
     roleModels.push(role);
   }
 
-  // console.log(roleModels);
-
-  // user = yield user.setRoles(roleModels);
+  yield user.setRoles(roleModels);
 
   user.email = email;
   profile.firstName = firstName;

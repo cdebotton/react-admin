@@ -97,7 +97,9 @@ export default class AdminUserEditRoute extends React.Component {
           </div>
           <div className="form-col roles">
             <h2>Roles</h2>
-            <ToggleGroup name="roles">
+            <ToggleGroup
+              defaultValue={ user.get("Roles") }
+              name="roles">
             { roles.toList().map((role, key) => (
               <Toggle
                 name={ role.get("name") }

@@ -3,12 +3,14 @@
 import * as request from "./request";
 import { Schema, arrayOf, normalize } from "normalizr";
 
+let Role = new Schema("roles");
 let Token = new Schema("tokens");
 let Profile = new Schema("profiles");
 let User = new Schema("users");
 
 User.define({
   Tokens: arrayOf(Token),
+  Roles: arrayOf(Role),
   Profile: Profile
 });
 
