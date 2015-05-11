@@ -16,3 +16,7 @@ export default class AdminRolesRoute extends React.Component {
     );
   }
 }
+
+if (process.env.BROWSER) {
+  require("./admin-roles-route.styl");
+}

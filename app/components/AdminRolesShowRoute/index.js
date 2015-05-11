@@ -34,22 +34,40 @@ export default class AdminRolesShowRoute extends React.Component {
           <p>Loading...</p>
         }
         { roles &&
-          <ul>
-            { roles.toList().map((role, key) => (
-              <li key={ key }>
+          <ul className="role-list">
+            <lh className="id">id</lh>
+            <lh className="name">Role Name</lh>
+            <lh className="actions">Actions</lh>
+            { roles.toList().map((role, key) => [
+              <li
+                key={ `${key}.id` }
+                className="id">
+                { role.get("id") }
+              </li>,
+              <li
+                className="name"
+                key={ `${key}.name` }>
                 <Link
                   params={{ roleId: role.get("id") }}
                   to="editRole">
                   { role.get("name") }
                 </Link>
+              </li>,
+              <li
+                key={ `${key}.actions` }
+                className="actions">
                 <button onClick={ this.handleDestroy(role) }>
                   Remove
                 </button>
               </li>
-            )) }
+            ]) }
           </ul>
         }
       </div>
     );
   }
+}
+
+if (process.env.BROWSER) {
+  require("./admin-roles-show-route.styl");
 }

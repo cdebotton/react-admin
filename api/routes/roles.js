@@ -1,7 +1,7 @@
 "use strict";
 
 import Router from "koa-router";
-import { Role } from "../models";
+import { Role, Permission } from "../models";
 import * as AuthService from "../services/AuthService";
 
 let router = new Router();
@@ -27,7 +27,10 @@ router.post("/roles", AuthService.protect(), function *(next) {
 
 router.put("/roles/:roleId", AuthService.protect(), function *(next) {
   let { name } = this.request.body;
-  let role = yield Role.findOne({ where: { id: this.params.roleId } });
+  let role = yield Role.findOne({
+    where: { id: this.params.roleId },
+    include: [{ model: Permission }]
+  });
 
   if (!role) {
     this.app.emit("error", `Role: ${this.params.id} not found.`, this);

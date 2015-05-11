@@ -30,26 +30,19 @@
   .active-sessions
     width 25%
 
-  .form-row
-    display flex
+
+
+  .input
+    width 100% * (1/3)
+
+    & + .input
+      margin-left 1rem
+
+  .text-area
     width 100%
-    margin-bottom 40px
-    cf()
 
-    .input
-      width 100% * (1/3)
-
-      & + .input
-        margin-left 1rem
-
-    .text-area
-      width 100%
-
-      textarea
-        height 12rem
-
-  .form-row:last-child
-    justify-content flex-end
+    textarea
+      height 12rem
 
 .session-list
   display flex

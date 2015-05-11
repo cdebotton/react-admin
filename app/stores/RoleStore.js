@@ -47,7 +47,7 @@ export default class RoleStore {
 
   static getRoleById(id) {
     let state = this.getState();
-    return state.getIn(["roles", id]);
+    return state.getIn(["roles", id.toString()]);
   }
 
   static getLatestRole() {

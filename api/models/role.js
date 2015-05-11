@@ -11,6 +11,10 @@ module.exports = function(sequelize, DataTypes) {
           hooks: true,
           through: models.UserRole
         });
+
+        Role.hasMany(models.Permission, {
+          onDelete: "cascade"
+        });
       }
     }
   });
