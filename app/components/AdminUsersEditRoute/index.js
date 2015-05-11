@@ -25,12 +25,12 @@ export default class AdminUserEditRoute extends React.Component {
     router: PropTypes.func.isRequired
   }
 
-  static async fetchData(router) {
+  static fetchData(router) {
     let { userId } = router.params;
-    let user = await UserActionCreators.getUser(userId);
-    let roles = await RoleActionCreators.getRoles();
+    let user = UserActionCreators.getUser(userId);
+    let roles = RoleActionCreators.getRoles();
 
-    return user;
+    return Promise.all([user, roles]);
   }
 
   static getStateFromStores(router) {

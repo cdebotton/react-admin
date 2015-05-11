@@ -7,8 +7,8 @@ import storeComponent from "../../decorators/storeComponent";
 
 @storeComponent(TokenStore)
 export default class AdminTokensRoute extends React.Component {
-  static async fetchData(router) {
-    return await TokenActionCreators.getTokens();
+  static fetchData(router) {
+    return TokenActionCreators.getTokens();
   }
 
   static getStateFromStores(router) {

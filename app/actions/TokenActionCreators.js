@@ -19,10 +19,10 @@ export default class TokenActionCreators {
     try {
       let tokens = await TokenAPI.getTokens();
 
-      this.actions.getTokensSuccess.defer(tokens);
+      this.actions.getTokensSuccess(tokens);
     }
     catch (err) {
-      this.actions.getTokensError.defer(err);
+      this.actions.getTokensError(err);
     }
   }
 }

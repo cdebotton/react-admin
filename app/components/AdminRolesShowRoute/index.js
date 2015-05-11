@@ -9,8 +9,8 @@ import storeComponent from "../../decorators/storeComponent";
 
 @storeComponent(RoleStore)
 export default class AdminRolesShowRoute extends React.Component {
-  static async fetchData(router) {
-    return await RoleActionCreators.getRoles();
+  static fetchData(router) {
+    return RoleActionCreators.getRoles();
   }
 
   static getStateFromStores(router) {
@@ -37,7 +37,11 @@ export default class AdminRolesShowRoute extends React.Component {
           <ul>
             { roles.toList().map((role, key) => (
               <li key={ key }>
-                { role.get("name") }
+                <Link
+                  params={{ roleId: role.get("id") }}
+                  to="editRole">
+                  { role.get("name") }
+                </Link>
                 <button onClick={ this.handleDestroy(role) }>
                   Remove
                 </button>

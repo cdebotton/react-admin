@@ -2,14 +2,14 @@
 
 import { User, Token } from "../models";
 
-const Errors = {
-  invalidLogin: new Error("Invalid email address or password provided."),
-  invalidToken: new Error("Invalid api authorization token.")
-};
+function invalidLogin(response) {
+  response.status = 400;
+  response.body = { message: "Invalid login" };
+}
 
 export let login = () => {
   return function *(next) {
-    if (this.session.user) {
+    if (this.session.token) {
       return yield next;
     }
 
@@ -25,7 +25,7 @@ export let login = () => {
     });
 
     if (!user) {
-      this.app.emit("error", Errors.invalidLogin, this);
+      return invalidLogin(this);
     }
 
     if (user.verifyPassword(password)) {
@@ -48,7 +48,7 @@ export let login = () => {
       return yield next;
     }
     else {
-      this.app.emit("error", Errors.invalidLogin, this);
+      return invalidLogin(this);
     }
   };
 };

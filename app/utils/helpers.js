@@ -9,9 +9,9 @@ export let mask = (obj, ...props) => {
 
 export let fetchData = (state) => {
   return new Promise((resolve, reject) => {
-    let promises = state.routes.filter(route => {
-      return typeof route.handler.fetchData === "function";
-    }).map(route => route.handler.fetchData(state));
+    let promises = state.routes
+      .filter(route => typeof route.handler.fetchData === "function")
+      .map(route => route.handler.fetchData(state));
 
     Promise.all(promises)
       .then(data => resolve(data))

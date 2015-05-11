@@ -15,6 +15,7 @@ export default function errorHandler() {
     }
     catch (err) {
       const { status, body } = this;
+
       if (err instanceof ResourceExistsError) {
         this.status = 400;
         this.body = { message: err.reason };

@@ -21,12 +21,12 @@ export default class SessionActionCreators {
 
     try {
       let session = await SessionAPI.login(credentials);
-      this.actions.loginSuccess.defer(session);
+      this.actions.loginSuccess(session);
 
       return session;
     }
     catch (err) {
-      this.actions.loginError.defer(err);
+      this.actions.loginError(err);
 
       return err;
     }
@@ -37,12 +37,12 @@ export default class SessionActionCreators {
 
     try {
       let session = await SessionAPI.logout(user);
-      this.actions.logoutSuccess.defer(session);
+      this.actions.logoutSuccess(session);
 
       return session;
     }
     catch (err) {
-      this.actions.logoutError.defer(err);
+      this.actions.logoutError(err);
 
       return err;
     }

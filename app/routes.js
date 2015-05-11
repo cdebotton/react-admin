@@ -21,6 +21,7 @@ import AdminUsersCreateRoute from "./components/AdminUsersCreateRoute";
 import AdminRolesRoute from "./components/AdminRolesRoute";
 import AdminRolesShowRoute from "./components/AdminRolesShowRoute";
 import AdminRolesCreateRoute from "./components/AdminRolesCreateRoute";
+import AdminRolesEditRoute from "./components/AdminRolesEditRoute";
 
 import AdminTokensRoute from"./components/AdminTokensRoute";
 import HomeRoute from "./components/HomeRoute";
@@ -43,6 +44,7 @@ export default (
         <Route name="roles" handler={ AdminRolesRoute }>
           <DefaultRoute handler={ AdminRolesShowRoute } />
           <Route name="createRole" path="new" handler={ AdminRolesCreateRoute } />
+          <Route name="editRole" path=":roleId" handler={ AdminRolesEditRoute} />
         </Route>
       </Route>
       <NotFoundRoute handler={ NotFoundPage } />

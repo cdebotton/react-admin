@@ -13,6 +13,7 @@ export default class SessionStore {
 
   constructor() {
     this.state = new Map({
+      status: null,
       loading: false,
       nextPath: null,
       token: false
@@ -43,18 +44,22 @@ export default class SessionStore {
     let state = this.state.merge({
       loading: false,
       nextPath: null,
-      token: token
+      token: token,
+      status: 200
     });
 
     this.setState(state);
   }
 
   onLoginError(err) {
+    let status = parseInt(err.status, 10);
+
     let state = this.state.merge({
-      loading: false
+      loading: false,
+      status: status,
+      token: false
     });
 
-    console.log(err);
     this.setState(state);
   }
 

@@ -26,12 +26,12 @@ export default class RoleActionCreators {
 
     try {
       let role = await RoleAPI.createRole(data);
-      this.actions.createRoleSuccess.defer(role);
+      this.actions.createRoleSuccess(role);
 
       return role;
     }
     catch (err) {
-      this.actions.createRoleError.defer(err);
+      this.actions.createRoleError(err);
 
       return err;
     }
@@ -42,12 +42,12 @@ export default class RoleActionCreators {
 
     try {
       let roles = await RoleAPI.getRoles();
-      this.actions.getRolesSuccess.defer(roles);
+      this.actions.getRolesSuccess(roles);
 
       return roles;
     }
     catch (err) {
-      this.actions.getRolesError.defer(err);
+      this.actions.getRolesError(err);
 
       return err;
     }
@@ -60,11 +60,11 @@ export default class RoleActionCreators {
       let roleId = role.get("id");
       let success = await RoleAPI.destroyRole(roleId);
 
-      this.actions.destroyRoleSuccess.defer(true);
+      this.actions.destroyRoleSuccess(true);
       return true;
     }
     catch (err) {
-      this.actions.destroyRoleError.defer({ err, role });
+      this.actions.destroyRoleError({ err, role });
     }
   }
 
@@ -73,14 +73,10 @@ export default class RoleActionCreators {
 
     try {
       let role = await RoleAPI.getRole(roleId);
-      this.actions.getRoleSuccess.defer(role);
-
-      return role;
+      this.actions.getRoleSuccess(role);
     }
     catch (err) {
-      this.actions.getRoleError.defer(err);
-
-      return err;
+      this.actions.getRoleError(err);
     }
   }
 
@@ -89,11 +85,11 @@ export default class RoleActionCreators {
 
     try {
       let role = await RoleAPI.updateRole(roleId, model);
-      this.actions.updateRoleSuccess.defer(role);
+      this.actions.updateRoleSuccess(role);
       return role;
     }
     catch (err) {
-      this.actions.updateRoleError.defer(err);
+      this.actions.updateRoleError(err);
     }
   }
 }

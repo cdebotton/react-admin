@@ -18,7 +18,10 @@ class RoleAPI {
 
   getRole(id) {
     return request.get(`/api/roles/${id}`)
-      .then(roles => normalize(roles, arrayOf(Role)));
+      .then(roles => {
+        console.log(roles);
+        return normalize(roles, arrayOf(Role));
+      });
   }
 
   updateRole(id, model) {

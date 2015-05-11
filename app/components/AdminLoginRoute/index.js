@@ -35,13 +35,22 @@ export default class LoginRoute extends React.Component {
     let credentials = helpers.mask(data, "email", "password");
     let nextPath = this.props.session.get("nextPath") || "admin";
 
-    await SessionActionCreators.login(credentials);
+    SessionActionCreators.login(credentials);
+  }
 
-    this.context.router.transitionTo(nextPath);
+  componentWillUpdate(nextProps) {
+    let token = nextProps.session.get("token");
+    let nextPath = this.props.session.get("nextPath") || "admin";
+
+
+    if (token) {
+      this.context.router.transitionTo(nextPath);
+    }
   }
 
   render() {
     let nextPath  = this.props.session.get("nextPath", null);
+    let status = this.props.session.get("status", 200);
 
     return (
       <DocumentTitle title="admin/login - debotton.io">
@@ -64,6 +73,9 @@ export default class LoginRoute extends React.Component {
             { nextPath &&
               <div className="disclaimers">
                 <p>Please Login to continue to `{ nextPath }`.</p>
+                { status === 400 &&
+                  <p className="error">Invalid login information.</p>
+                }
               </div>
             }
           </div>

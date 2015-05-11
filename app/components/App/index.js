@@ -8,7 +8,7 @@ import Header from "../Header";
 export default class App extends React.Component {
   render() {
     return (
-      <DocumentTitle title="debotton.io">
+      <DocumentTitle title="koa server">
         <div className="app">
           <RouteHandler />
         </div>

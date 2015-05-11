@@ -14,7 +14,8 @@ export default class RoleStore {
 
   state = Map({
     roles: Map({}),
-    loading: false
+    loading: false,
+    status: 200
   })
 
   constructor() {
@@ -46,7 +47,6 @@ export default class RoleStore {
 
   static getRoleById(id) {
     let state = this.getState();
-
     return state.getIn(["roles", id]);
   }
 
