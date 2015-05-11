@@ -37,18 +37,12 @@ export default class AdminRolesEditRoute extends React.Component {
           {
             controller: "users",
             resourceId: "*",
-            create: true,
-            read: true,
-            update: true,
-            destroy: true
+            crud: ["create", "read", "update", "destroy"]
           },
           {
             controller: "roles",
             resourceId: "*",
-            create: false,
-            read: true,
-            update: false,
-            destroy: false
+            crud: ["read"]
           }
         ])
       })

@@ -9,12 +9,26 @@ export default class Repeater extends React.Component {
     let {
       className,
       children,
+      data,
       ...otherProps
     } = this.props;
 
     return (
       <div className={ classNames(["repeater", className]) }>
-        { React.Children.map(children, child => cloneWithProps(child)) }
+        { data.map((dataItem, key) => {
+          return (
+            <div
+              key={ key }
+              className="repeater-row">
+              { React.Children.map(children, (child, key) => {
+                return cloneWithProps(child, {
+                  defaultValue: dataItem[child.props.name]
+                });
+              }) }
+            </div>
+          );
+        }) }
+
       </div>
     );
   }
