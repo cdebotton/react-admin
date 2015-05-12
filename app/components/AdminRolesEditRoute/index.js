@@ -6,6 +6,7 @@ import Form, {
   Repeater,
   ToggleGroup,
   Toggle,
+  Select,
   Submit,
   Cancel
 } from "../Form";
@@ -96,19 +97,20 @@ export default class AdminRolesEditRoute extends React.Component {
               <Repeater
                 className="permissions"
                 data={ role.get("Permissions") }>
-                <Input
-                  className="controller"
+                <Select
+                  placeholder="Controller"
                   name="controller"
-                  placeholder="Controller" />
+                  className="controller"
+                  values={ role.get("Controllers") } />
                 <Input
                   className="resource-id"
                   name="resourceId"
                   placeholder="id?" />
                 <ToggleGroup className="crud-toggles" name="crud">
-                  <Toggle name="create">Create</Toggle>
-                  <Toggle name="read">Read</Toggle>
-                  <Toggle name="update">Update</Toggle>
-                  <Toggle name="destroy">Destroy</Toggle>
+                  <Toggle value="create">Create</Toggle>
+                  <Toggle value="read">Read</Toggle>
+                  <Toggle value="update">Update</Toggle>
+                  <Toggle value="destroy">Destroy</Toggle>
                 </ToggleGroup>
               </Repeater>
             </div>

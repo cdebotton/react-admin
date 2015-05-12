@@ -17,7 +17,7 @@ export class ToggleGroup extends React.Component {
 
   static propTypes = {
     name: PropTypes.string.isRequired,
-    value: PropTypes.string,
+    value: PropTypes.any,
     validate: PropTypes.string,
     defaultValue: PropTypes.any
   }
@@ -114,7 +114,7 @@ export class Toggle extends React.Component {
   }
 
   static propTypes = {
-    value: PropTypes.number.isRequired
+    value: PropTypes.any.isRequired
   }
 
   handleClick(event) {

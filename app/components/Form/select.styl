@@ -1,0 +1,51 @@
+@import "nib"
+@import "jeet"
+@import "rupture"
+
+.select
+  position relative
+  display flex
+  flex-flow row wrap
+  border-bottom 1px solid #ccc
+  height 4rem
+
+  .select-value
+    display flex
+    width 100%
+    height 100%
+    cursor pointer
+
+    .value
+      width 80%
+      height 100%
+      font-size 1.414rem
+      font-weight 300
+      padding 1.414rem * (1/2)
+
+    .select-btn
+      width 20%
+      height 100%
+      text-align center
+      padding (1.414rem * (1/2)) 0
+
+  .select-list
+    position absolute
+    left 0
+    top 100%
+    width 100%
+    list-style none
+    padding 0
+    margin 0
+    border-top 1px solid #ccc
+    z-index 10
+
+    li
+      padding 0.5rem
+      font-size 1.414rem
+      font-weight 300
+      background-color #fff
+      border-bottom 1px solid #ccc
+
+      &:hover
+        background-color #333
+        color #fff

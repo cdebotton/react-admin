@@ -23,39 +23,3 @@
 
       & + .underline
         width 100%
-
-  .label
-    position absolute
-    left 1rem
-    top 120%
-    font-size 1.15rem
-    text-transform uppercase
-    opacity 0.0
-    transform translate3d(0, -20%, 0)
-    transition transform 400ms ease, opacity 400ms ease
-
-    .fa
-      color green
-      margin-left 0.5rem
-
-    .validate-enter, .validate-leave
-      transition all 375ms ease-in-out
-
-    .validate-enter
-      opacity 0
-      transform translateY(-50%)
-      &.validate-enter-active
-        opacity 1
-        transform translateY(0)
-
-    .validate-leave
-      opacity 1
-      transform translateY(0)
-      &.validate-leave-active
-        opacity 0
-        transform translateY(50%)
-
-    &.visible
-      transform translate3d(0, 0, 0)
-      opacity 1.0
-

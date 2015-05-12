@@ -1,5 +1,7 @@
 "use strict";
 
+import fs from "fs";
+import inflection from "inflection";
 import Router from "koa-router";
 import { Role, Permission } from "../models";
 import * as AuthService from "../services/AuthService";
@@ -14,6 +16,27 @@ router.get("/roles", AuthService.protect(), function *(next) {
 
 router.get("/roles/:roleId", AuthService.protect(), function *(next) {
   let role = yield Role.findOne({ where: { id: this.params.roleId } });
+  let controllers = yield new Promise((resolve, reject) => {
+    fs.readdir(__dirname, (err, dirs) => {
+      if (err) {
+        return reject(err);
+      }
+      dirs = dirs.map(d => d.match(/^(.+)\.js$/)[1])
+        .reduce((memo, controller) => {
+          let controllerName = inflection.transform(controller, [
+            "singularize",
+            "titleize"
+          ]) + "Controller";
+
+          memo[controller] = controllerName;
+          return memo;
+        }, { every: "*" });
+
+      resolve(dirs);
+    });
+  });
+
+  role.setDataValue("Controllers", controllers);
 
   this.body = [role];
 });

@@ -75,6 +75,7 @@
     "classnames": "^1.2.2",
     "concurrently": "0.0.5",
     "immutable": "^3.7.2",
+    "inflection": "^1.7.1",
     "koa": "^0.19.1",
     "koa-bodyparser": "^1.5.0",
     "koa-compress": "^1.0.8",
