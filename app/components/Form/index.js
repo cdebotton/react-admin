@@ -3,7 +3,8 @@
 import React, { PropTypes } from "react";
 import classNames from "classnames";
 import validator from "validator";
-import { OrderedMap, List } from "immutable";
+import { OrderedMap, List, Iterable } from "immutable";
+import { Repeater } from "./Repeater";
 import cloneWithProps from "react/lib/cloneWithProps";
 import autobind from "../../decorators/autobind";
 
@@ -81,6 +82,7 @@ export default class Form extends React.Component {
 
   handleUpdate(name, value, errors = new List()) {
     let { formData } = this.state;
+
     formData = formData.update(name, v => {
       return OrderedMap.isOrderedMap(v) ?
         v.merge({ value, errors }) :
@@ -137,12 +139,14 @@ export default class Form extends React.Component {
 
       let errors = new List();
 
-      if (children) {
+      if (field.type !== Repeater && children) {
         registeredFields = registeredFields
           .concat(this.registerInputs(children));
       }
 
-      if (!(field.type && field.type._isReactFormElement && field.props.name)) {
+      if (!(field.type &&
+          field.type._isReactFormElement &&
+          field.props.name)) {
         return false;
       }
 
@@ -160,7 +164,14 @@ export default class Form extends React.Component {
     let { onSubmit } = this.props;
     let { formData } = this.state;
     let model = formData.reduce((memo, field, key) => {
-      memo[key] = field.get("value");
+      let value = field.get("value");
+
+      if (Iterable.isIterable(value)) {
+        value = value.toJS();
+      }
+
+      memo[key] = value;
+
       return memo;
     }, {});
 

@@ -2,7 +2,9 @@
 
 import React, { PropTypes } from "react";
 import { Link, RouteHandler } from "react-router";
+import authedComponent from "../../decorators/authedComponent";
 
+@authedComponent
 export default class AdminRolesRoute extends React.Component {
   render() {
     return (

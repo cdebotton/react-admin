@@ -20,6 +20,8 @@ import storeComponent from "../../decorators/storeComponent";
 export default class AdminRolesEditRoute extends React.Component {
   constructor(props) {
     super(props);
+
+    this.handleAddRole = this.handleAddRole.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -34,25 +36,19 @@ export default class AdminRolesEditRoute extends React.Component {
     let { roleId } = router.params;
 
     return {
-      role: RoleStore.getRoleById(roleId).merge({
-        Permissions: new List([
-          {
-            controller: "users",
-            resourceId: "*",
-            crud: ["create", "read", "update", "destroy"]
-          },
-          {
-            controller: "roles",
-            resourceId: "*",
-            crud: ["read"]
-          }
-        ])
-      })
+      role: RoleStore.getRoleById(roleId)
     };
   }
 
   static contextTypes = {
     router: PropTypes.func.isRequired
+  }
+
+  handleAddRole(event) {
+    let roleId = this.props.role.get("id");
+
+    RoleActionCreators.addPermission(roleId);
+    event.preventDefault();
   }
 
   handleSubmit(formData) {
@@ -97,6 +93,7 @@ export default class AdminRolesEditRoute extends React.Component {
               <h2>Permissions</h2>
               <Repeater
                 className="permissions"
+                name="Permissions"
                 data={ role.get("Permissions") }>
                 <Select
                   placeholder="Controller"
@@ -114,7 +111,9 @@ export default class AdminRolesEditRoute extends React.Component {
                   <Toggle value="destroy">Destroy</Toggle>
                 </ToggleGroup>
               </Repeater>
-              <AddRepeater />
+              <AddRepeater onClick={ this.handleAddRole }>
+                + Add Permission Rule
+              </AddRepeater>
             </div>
             <div className="form-row">
               <Submit>Save { role.get("name") }</Submit>

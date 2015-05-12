@@ -17,7 +17,8 @@ export default class RoleActionCreators {
       "updateRoleSuccess",
       "updateRoleError",
       "destroyRoleSuccess",
-      "destroyRoleError"
+      "destroyRoleError",
+      "addPermission"
     );
   }
 

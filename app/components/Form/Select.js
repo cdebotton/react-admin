@@ -40,7 +40,9 @@ export default class Select extends React.Component {
     let { onValidate, onUpdate } = this.context;
     let errors = onValidate(value, this.props.validation);
 
-    this.setState({ value, errors });
+    this.setState({ value, errors }, () => {
+      onUpdate(name, value, errors);
+    });
   }
 
   handleSelect(value) {
@@ -91,7 +93,7 @@ export default class Select extends React.Component {
     let valueItems;
     let selected;
 
-    const isLabelVisible = value.trim() !== "";
+    const isLabelVisible = value && value.trim() !== "";
 
     if (values) {
       valueItems = [];
@@ -106,7 +108,7 @@ export default class Select extends React.Component {
         );
       }
 
-      selected = values.get(value);
+      selected = values.get(value) || placeholder;
     }
 
     return (

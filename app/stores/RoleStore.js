@@ -3,7 +3,7 @@
 import alt from "../alt";
 import { createStore } from "alt/utils/decorators";
 import immutable from "alt/utils/ImmutableUtil";
-import Immutable, { Map, Iterable } from "immutable";
+import Immutable, { Map, Iterable, List } from "immutable";
 import UserActionCreators from "../actions/UserActionCreators";
 import RoleActionCreators from "../actions/RoleActionCreators";
 
@@ -37,7 +37,8 @@ export default class RoleStore {
       ],
       onDestroyRoleError: [
         RoleActionCreators.DESTROY_ROLE_ERROR
-      ]
+      ],
+      onAddPermission: RoleActionCreators.ADD_PERMISSION
     });
   }
 
@@ -93,5 +94,19 @@ export default class RoleStore {
 
     this.setState(state);
     console.log(err);
+  }
+
+  onAddPermission(roleId) {
+    let state = this.state.updateIn(["roles", roleId.toString()], r => {
+      return r.update("Permissions", p => p.push({
+        id: null,
+        RoleId: roleId,
+        crud: new List(),
+        controller: null,
+        resourceId: null
+      }));
+    });
+
+    this.setState(state);
   }
 }

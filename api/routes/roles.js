@@ -15,7 +15,11 @@ router.get("/roles", AuthService.protect(), function *(next) {
 });
 
 router.get("/roles/:roleId", AuthService.protect(), function *(next) {
-  let role = yield Role.findOne({ where: { id: this.params.roleId } });
+  let role = yield Role.findOne({
+    where: { id: this.params.roleId },
+    include: [{ model: Permission }]
+  });
+
   let controllers = yield new Promise((resolve, reject) => {
     fs.readdir(__dirname, (err, dirs) => {
       if (err) {
