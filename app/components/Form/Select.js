@@ -88,22 +88,26 @@ export default class Select extends React.Component {
 
     let { open, value, errors } = this.state;
     let isValid = errors.size === 0;
+    let valueItems;
+    let selected;
 
     const isLabelVisible = value.trim() !== "";
 
-    let valueItems = [];
+    if (values) {
+      valueItems = [];
 
-    for (let [key, value] of values.entries()) {
-      valueItems.push(
-        <li
-          onClick={ this.handleSelect(key) }
-          key={ key }>
-          { value }
-        </li>
-      );
+      for (let [key, value] of values.entries()) {
+        valueItems.push(
+          <li
+            onClick={ this.handleSelect(key) }
+            key={ key }>
+            { value }
+          </li>
+        );
+      }
+
+      selected = values.get(value);
     }
-
-    let selected = values.get(value);
 
     return (
       <div
@@ -111,28 +115,33 @@ export default class Select extends React.Component {
         className={ classNames(["select", className, {
           valid: isValid
         }]) }>
-        <span className="select-value" onClick={ this.handleOpen }>
-          <span className="value">{ selected }</span>
-          <span className="select-btn">
-            <i className="fa fa-chevron-down" />
-          </span>
-        </span>
-        { open &&
-          <ul className="select-list">
-            { valueItems }
-          </ul>
-        }
-        <div className="underline" />
-        <label className={ classNames(["label", {
-          visible: isLabelVisible
-        }] )}>
-          { placeholder }
-          <CSSTransitionGroup transitionName="validate">
-            { isValid &&
-              <i className="fa fa-check" />
-            }
-          </CSSTransitionGroup>
-        </label>
+        { values && [
+          <span
+            key="value"
+            className="select-value"
+            onClick={ this.handleOpen }>
+            <span className="value">{ selected }</span>
+            <span className="select-btn">
+              <i className="fa fa-chevron-down" />
+            </span>
+          </span>,
+          open && (
+            <ul key="list" className="select-list">
+              { valueItems }
+            </ul>
+          ),
+          <div key="underline" className="underline" />,
+          <label key="placeholder" className={ classNames(["label", {
+            visible: isLabelVisible
+          }] )}>
+            { placeholder }
+            <CSSTransitionGroup transitionName="validate">
+              { isValid &&
+                <i className="fa fa-check" />
+              }
+            </CSSTransitionGroup>
+          </label>
+        ] }
       </div>
     );
   }
