@@ -8,6 +8,7 @@
   flex-flow row wrap
 
   .toggle
+    position relative
     flex-grow 1
     font-size 1.414rem
     font-weight 300
@@ -17,7 +18,33 @@
     cursor pointer
     text-align center
 
-    &:hover, &.active
+    &::after
+      content ' '
+      display block
+      position absolute
+      top 0
+      left 0
+      right 0
+      bottom 0
+      border 0 solid transparent
+      transition border 100ms ease-in-out
+
+    &:hover
+      &::after
+        border-width 4px
+        border-color #ccc
+
+    &.active
       background-color #333
       border-color #000
       color #fff
+
+      &::after
+        border-width 1px
+        border-color #777
+
+      &:hover
+        background-color #000
+
+        &::after
+          border-width 4px

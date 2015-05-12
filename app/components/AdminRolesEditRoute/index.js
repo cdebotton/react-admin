@@ -4,6 +4,7 @@ import React, { PropTypes } from "react";
 import Form, {
   Input,
   Repeater,
+  AddRepeater,
   ToggleGroup,
   Toggle,
   Select,
@@ -113,6 +114,7 @@ export default class AdminRolesEditRoute extends React.Component {
                   <Toggle value="destroy">Destroy</Toggle>
                 </ToggleGroup>
               </Repeater>
+              <AddRepeater />
             </div>
             <div className="form-row">
               <Submit>Save { role.get("name") }</Submit>

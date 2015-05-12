@@ -4,7 +4,7 @@ import React, { PropTypes } from "react";
 import cloneWithProps from "react/lib/cloneWithProps";
 import classNames from "classnames";
 
-export default class Repeater extends React.Component {
+export class Repeater extends React.Component {
   render() {
     let {
       className,
@@ -30,6 +30,30 @@ export default class Repeater extends React.Component {
         }) }
 
       </div>
+    );
+  }
+}
+
+export class AddRepeater extends React.Component {
+  render() {
+    let {
+      children,
+      className,
+      ...otherProps
+    } = this.props;
+
+
+    if (!children) {
+      children = "+";
+    }
+
+    return (
+      <button
+        { ...otherProps }
+        className={ classNames(["add-repeater", className]) }
+        type="button">
+        { children }
+      </button>
     );
   }
 }

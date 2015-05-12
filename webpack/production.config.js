@@ -28,8 +28,8 @@ module.exports = {
     loaders: [
       { test: /\.json$/, exclude: /node_modules/, loader: "json" },
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?name=/fonts/[name].[ext]&limit=10000&minetype=application/font-woff" },
-      { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader?name=/fonts/[name].[ext]" },
-      { test: /\.(jpe?g|png|gif|svg)$/, exclude: /node_modules/, loader: "file" },
+      { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, include: /font/, loader: "file-loader?name=/fonts/[name].[ext]" },
+      { test: /\.(jpe?g|png|gif|svg)$/, exclude: /node_modules/, loader: "file?name=/assets/[name].[ext]" },
       { test: /\.css$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract("style", "css") },
       { test: /\.styl$/, exclude: /node_modules/, loader: ExtractTextPlugin.extract("style", "css!stylus") },
       { test: /\.js$/, exclude: /node_modules/, loaders: [strip.loader("debug"), "babel?stage=0&optional=runtime"] }
