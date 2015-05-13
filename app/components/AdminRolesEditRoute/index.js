@@ -5,6 +5,7 @@ import Form, {
   Input,
   Repeater,
   AddRepeater,
+  RemoveRepeater,
   ToggleGroup,
   Toggle,
   Select,
@@ -21,7 +22,8 @@ export default class AdminRolesEditRoute extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleAddRole = this.handleAddRole.bind(this);
+    this.handleAddPermission = this.handleAddPermission.bind(this);
+    this.handleRemovePermission = this.handleRemovePermission.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -44,11 +46,20 @@ export default class AdminRolesEditRoute extends React.Component {
     router: PropTypes.func.isRequired
   }
 
-  handleAddRole(event) {
+  handleAddPermission(event) {
     let roleId = this.props.role.get("id");
 
     RoleActionCreators.addPermission(roleId);
     event.preventDefault();
+  }
+
+  handleRemovePermission(permission) {
+    let roleId = this.props.role.get("id");
+
+    RoleActionCreators.removePermission({
+      roleId,
+      permission
+    });
   }
 
   handleSubmit(formData) {
@@ -106,8 +117,11 @@ export default class AdminRolesEditRoute extends React.Component {
                   <Toggle value="update">Update</Toggle>
                   <Toggle value="destroy">Destroy</Toggle>
                 </ToggleGroup>
+                <RemoveRepeater onClick={ this.handleRemovePermission }>
+                  Remove Permission
+                </RemoveRepeater>
               </Repeater>
-              <AddRepeater onClick={ this.handleAddRole }>
+              <AddRepeater onClick={ this.handleAddPermission }>
                 + Add Permission Rule
               </AddRepeater>
             </div>

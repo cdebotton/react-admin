@@ -135,4 +135,18 @@ export default class RoleStore {
 
     this.setState(state);
   }
+
+  onRemovePermission(action) {
+    let { roleId, permission } = action;
+
+    roleId = roleId.toString();
+
+    let state = this.state.updateIn(["roles", roleId, "Permissions"], v => {
+      let index = v.findIndex(node => node === permission);
+
+      return v.delete(index);
+    });
+
+    this.setState(state);
+  }
 }

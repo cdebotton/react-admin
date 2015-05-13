@@ -203,7 +203,7 @@ export default class Form extends React.Component {
 export Input from "./Input";
 export TextArea from "./TextArea";
 export { Toggle, ToggleGroup } from "./Toggles";
-export { Repeater, AddRepeater } from "./Repeater";
+export { Repeater, AddRepeater, RemoveRepeater } from "./Repeater";
 export Select from "./Select";
 export Submit from "./Submit";
 export Cancel from "./Cancel";

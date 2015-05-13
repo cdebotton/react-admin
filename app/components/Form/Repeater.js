@@ -73,7 +73,8 @@ export class Repeater extends React.Component {
                 return cloneWithProps(child, {
                   defaultValue: dataItem[child.props.name],
                   index: key,
-                  name: `${child.props.name}.${dataKey}`
+                  name: `${child.props.name}.${dataKey}`,
+                  dataItem: dataItem
                 });
               }) }
             </div>
@@ -105,6 +106,42 @@ export class AddRepeater extends React.Component {
       <button
         { ...otherProps }
         className={ classNames(["add-repeater", className]) }
+        type="button">
+        { children }
+      </button>
+    );
+  }
+}
+
+export class RemoveRepeater extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  static propTypes = {
+    onClick: PropTypes.func.isRequired,
+    dataItem: PropTypes.any.isRequired
+  }
+
+  handleClick(event) {
+    let { onClick, dataItem } = this.props;
+
+    event.preventDefault();
+    onClick(dataItem);
+  }
+
+  render() {
+    let {
+      children,
+      dataItem,
+      ...otherProps
+    } = this.props;
+
+    return (
+      <button
+        { ...otherProps }
+        onClick={ this.handleClick }
         type="button">
         { children }
       </button>
