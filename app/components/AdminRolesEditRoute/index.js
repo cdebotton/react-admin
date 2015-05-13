@@ -100,10 +100,6 @@ export default class AdminRolesEditRoute extends React.Component {
                   name="controller"
                   className="controller"
                   values={ role.get("Controllers") } />
-                <Input
-                  className="resource-id"
-                  name="resourceId"
-                  placeholder="id?" />
                 <ToggleGroup className="crud-toggles" name="crud">
                   <Toggle value="create">Create</Toggle>
                   <Toggle value="read">Read</Toggle>

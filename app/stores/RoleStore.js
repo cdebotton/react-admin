@@ -19,27 +19,7 @@ export default class RoleStore {
   })
 
   constructor() {
-    this.bindListeners({
-      onGetRoles: RoleActionCreators.GET_ROLES,
-      onCreateRole: RoleActionCreators.CREATE_ROLE,
-      onAddRolesSuccess: [
-        RoleActionCreators.CREATE_ROLE_SUCCESS,
-        RoleActionCreators.GET_ROLES_SUCCESS,
-        RoleActionCreators.GET_ROLE_SUCCESS,
-        RoleActionCreators.UPDATE_ROLE_SUCCESS
-      ],
-      onAddRolesError: [
-        RoleActionCreators.CREATE_ROLE_ERROR,
-        RoleActionCreators.GET_ROLES_ERROR
-      ],
-      onDestroyRole: [
-        RoleActionCreators.DESTROY_ROLE
-      ],
-      onDestroyRoleError: [
-        RoleActionCreators.DESTROY_ROLE_ERROR
-      ],
-      onAddPermission: RoleActionCreators.ADD_PERMISSION
-    });
+    this.bindActions(RoleActionCreators);
   }
 
   static getRoles() {
@@ -59,23 +39,24 @@ export default class RoleStore {
     return this.getState().get("loading");
   }
 
-  onGetRoles() {
-
+  setLoading(loading) {
+    let state = this.state.set("loading", loading);
+    this.setState(state);
   }
 
-  onCreateRole(role) {
-
-  }
-
-  onAddRolesSuccess(response) {
+  mergeRoles(response) {
     let { roles: roleResponse } = response.entities;
     let state = this.state.updateIn(["roles"], u => u.merge(roleResponse));
 
     this.setState(state);
+  };
+
+  onGetRoles() {
+    this.setLoading(true);
   }
 
-  onAddRolesError(err) {
-    console.log(err);
+  onCreateRole(role) {
+    this.setLoading(true);
   }
 
   onDestroyRole(role) {
@@ -83,7 +64,52 @@ export default class RoleStore {
     let roleId = role.get("id").toString();
 
     state = state.updateIn(["roles"], u => u.delete(roleId));
+
+    this.setLoading(true);
     this.setState(state);
+  }
+
+  onCreateRoleSuccess(response) {
+    let roles = this.mergeRoles(response);
+
+    this.setLoading(false);
+    this.setState(roles);
+  }
+
+  onGetRolesSuccess(response) {
+    let roles = this.mergeRoles(response);
+
+    this.setLoading(false);
+    this.setState(roles);
+  }
+
+  onGetRoleSuccess(response) {
+    let roles = this.mergeRoles(response);
+
+    this.setLoading(false);
+    this.setState(roles);
+  }
+
+  onUpdateRoleSuccess(response) {
+    let roles = this.mergeRoles(response);
+
+    this.setLoading(false);
+    this.setState(roles);
+  }
+
+  onGetRolesError(err) {
+    this.setLoading(false);
+    console.log(err);
+  }
+
+  onGetRoleError(err) {
+    this.setLoading(false);
+    console.log(err);
+  }
+
+  onCreateRoleError(err) {
+    this.setLoading(false);
+    console.log(err);
   }
 
   onDestroyRoleError(response) {
@@ -92,6 +118,7 @@ export default class RoleStore {
       [role.get("id")]: role
     }));
 
+    this.setLoading(false);
     this.setState(state);
     console.log(err);
   }
@@ -102,8 +129,7 @@ export default class RoleStore {
         id: null,
         RoleId: roleId,
         crud: new List(),
-        controller: null,
-        resourceId: null
+        controller: null
       }));
     });
 
