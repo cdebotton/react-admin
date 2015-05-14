@@ -44,11 +44,11 @@ export default class AdminRoute extends React.Component {
             <h1>koa server <small>Admin</small></h1>
             { isAuthed &&
               <div className="admin-controls">
+                <p>Welcome back, { email }</p>
                 <nav>
-                  <p>Welcome back, { email }</p>
                   <ul>
                     <li>
-                      <Link to="admin">Dashboard</Link>
+                      <Link to="dashboard">Dashboard</Link>
                     </li>
                     <li>
                       <Link to="users">Users</Link>

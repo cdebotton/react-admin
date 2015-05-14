@@ -4,29 +4,58 @@
 .admin-route
   display flex
   flex-flow column wrap
-  min-width 100%
   align-items flex-start
   align-content flex-start
-  padding-top 6rem
+  width 100%
 
   .header
-    position absolute
-    top 0
-    left 0
+    display flex
+    flex-flow row wrap
     width 100%
-    padding 4rem
-    cf()
+    align-items flex-end
+    margin-bottom 4rem
 
     h1
-      float left
-
-    nav
-      float left
+      margin 0
+      padding 0
+      line-height 1
       margin-right 1rem
-      cf()
 
-      li
-        float left
+    .admin-controls
+      display flex
+      flex-flow row wrap
+      flex-grow 1
+      align-items flex-end
 
-        & + li
-          margin-left 1rem
+      p
+        margin 0
+        padding 0
+        font-weight 300
+        font-size 1.414rem
+        width 100%
+
+      nav
+        flex-grow 1
+
+        ul
+          display flex
+          flex-flow row wrap
+          align-items flex-end
+          margin 0
+          padding 0
+          list-style none
+
+          li
+            & + li
+              margin-left 0.5rem
+
+            &:last-child
+              margin-left auto
+
+            a
+              text-decoration none
+              font-size 1.414rem
+              font-weight 300
+
+              &.active
+                font-weight 600

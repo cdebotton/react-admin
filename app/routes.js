@@ -34,7 +34,7 @@ export default (
     <Route handler={ App }>
       <DefaultRoute handler={ HomeRoute } />
       <Route name="admin" handler={ AdminRoute }>
-        <DefaultRoute handler={ AdminDashboardRoute } />
+        <DefaultRoute name="dashboard" handler={ AdminDashboardRoute } />
         <Route name="login" handler={ AdminLoginRoute } />
         <Route name="users" handler={ AdminUsersRoute }>
           <DefaultRoute handler={ AdminUsersShowRoute } />
