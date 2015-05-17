@@ -1,6 +1,6 @@
 "use strict";
 
-import { User, Token } from "../models";
+import { User, Profile, Token } from "../models";
 
 function invalidLogin(response) {
   response.status = 400;
@@ -21,7 +21,8 @@ export let login = () => {
 
     let user = yield User.find({
       where: { email: email },
-      attributes: ["id", "password"]
+      attributes: ["id", "password"],
+      include: [{ model: Profile }]
     });
 
     if (!user) {
@@ -34,7 +35,6 @@ export let login = () => {
           ipAddress: this.request.ip,
           UserId: user.id
         },
-        include: [{ model: User, attributes: ["id", "email", "lastLogin"] }],
         defaults: {
           key: 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
             let r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
@@ -42,6 +42,17 @@ export let login = () => {
           })
         }
       });
+
+      user = yield User.findOne({
+        where: { id: user.id },
+        attributes: ["id", "email"],
+        include: [{
+          model: Profile,
+          attributes: ["id", "firstName", "lastName", "dateOfBirth"]
+        }]
+      });
+
+      token.setDataValue("User", user.toJSON());
 
       this.session.token = token;
 
