@@ -16,28 +16,10 @@ export default class AdminRoute extends React.Component {
 
   static getStateFromStores(props) {
     let session = SessionStore.getState();
-    let user = session.getIn(["token", "User"]).toJS();
-    let profile = session.getIn(["token", "User", "Profile"]).toJS();
-
-    let name = [];
-
-    if (profile.firstName) {
-      name.push(profile.firstName);
-    }
-
-    if (profile.lastName) {
-      name.push(profile.lastName);
-    }
-
-    if (name.length === 0) {
-      name.push(user.email);
-    }
-
-    name = name.join(" ");
 
     return {
       isAuthed: SessionStore.isAuthed(),
-      name: name
+      token: session.get("token")
     };
   }
 
@@ -52,8 +34,28 @@ export default class AdminRoute extends React.Component {
     this.context.router.transitionTo("login");
   }
 
+  get userName() {
+    const name = [];
+    let { token } = this.props;
+    let user, { Profile: profile } = token.get("User").toJS();
+
+    if (profile.firstName) {
+      name.push(profile.firstName);
+    }
+
+    if (profile.lastName) {
+      name.push(profile.lastName);
+    }
+
+    if (name.length === 0) {
+      name.push(user.email);
+    }
+
+    return name.join(" ");
+  }
+
   render() {
-    let { isAuthed, name } = this.props;
+    let { isAuthed } = this.props;
 
     return (
       <DocumentTitle title="admin - debotton.io">
@@ -62,7 +64,7 @@ export default class AdminRoute extends React.Component {
             <h1>koa server <small>Admin</small></h1>
             { isAuthed &&
               <div className="admin-controls">
-                <p>Welcome back, { name }</p>
+                <p>Welcome back, { this.userName }</p>
                 <nav>
                   <ul>
                     <li>
